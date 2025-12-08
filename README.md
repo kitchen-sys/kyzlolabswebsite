@@ -33,7 +33,7 @@
 
 ```
 ╔═══════════════════════════════════════════════════════════════════════════════╗
-║                              TABLE OF CONTENTS                                 ║
+║                              TABLE OF CONTENTS                                ║
 ╠═══════════════════════════════════════════════════════════════════════════════╣
 ║  1. Project Overview ................................................. [OVR]  ║
 ║  2. Architecture ..................................................... [ARC]  ║
@@ -171,10 +171,10 @@
          ▼                                   ▼                 ▼
     ┌─────────────────────────────────────────────────────────────────┐
     │                          EVENT BUS                              │
-    │  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐            │
-    │  │  Tick   │  │ Signal  │  │  Order  │  │  Fill   │  ────────► │
-    │  │  Topic  │  │  Topic  │  │  Topic  │  │  Topic  │            │
-    │  └─────────┘  └─────────┘  └─────────┘  └─────────┘            │
+    │  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐             │
+    │  │  Tick   │  │ Signal  │  │  Order  │  │  Fill   │  ────────►  │
+    │  │  Topic  │  │  Topic  │  │  Topic  │  │  Topic  │             │
+    │  └─────────┘  └─────────┘  └─────────┘  └─────────┘             │
     └─────────────────────────────────────────────────────────────────┘
                                       │
                                       ▼
@@ -336,12 +336,12 @@ MAX_DAILY_LOSS=500
      │    KillSwitch     RiskService                                     │
      │                   ExecutionService                                │
      │                   GoldenCross                                     │
-     └─────────────────────────────────────────────────────────────────────┘
+     └───────────────────────────────────────────────────────────────────┘
                                        │
                                        ▼
-     ┌─────────────────────────────────────────────────────────────────────┐
-     │                          MAIN LOOP                                  │
-     │                                                                     │
+     ┌────────────────────────────────────────────────────────────────────┐
+     │                          MAIN LOOP                                 │
+     │                                                                    │
      │    ┌────────────────────────────────────────────────────────────┐  │
      │    │                                                            │  │
      │    │   while _running:                                          │  │
@@ -357,8 +357,8 @@ MAX_DAILY_LOSS=500
      │    │       └──► Fill received ──► PositionTracker.update()      │  │
      │    │                                                            │  │
      │    └────────────────────────────────────────────────────────────┘  │
-     │                                                                     │
-     └─────────────────────────────────────────────────────────────────────┘
+     │                                                                    │
+     └────────────────────────────────────────────────────────────────────┘
                                        │
                                        ▼
      ┌─────────────────────────────────────────────────────────────────────┐
@@ -367,11 +367,11 @@ MAX_DAILY_LOSS=500
      │    Signal (SIGINT/SIGTERM)                                          │
      │         │                                                           │
      │         ▼                                                           │
-     │    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐   │
-     │    │   Set    │───►│  Close   │───►│  Flush   │───►│  Exit    │   │
-     │    │ _running │    │  Stream  │    │  Events  │    │  Clean   │   │
-     │    │ = False  │    │  (5s TO) │    │  (3s TO) │    │          │   │
-     │    └──────────┘    └──────────┘    └──────────┘    └──────────┘   │
+     │    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐     │
+     │    │   Set    │───►│  Close   │───►│  Flush   │───►│  Exit    │     │
+     │    │ _running │    │  Stream  │    │  Events  │    │  Clean   │     │
+     │    │ = False  │    │  (5s TO) │    │  (3s TO) │    │          │     │
+     │    └──────────┘    └──────────┘    └──────────┘    └──────────┘     │
      │                                                                     │
      └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -383,13 +383,13 @@ MAX_DAILY_LOSS=500
 │                            ALPACA BROKER ADAPTER                            │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│    Capability          │ Method                │ Description               │
-│   ─────────────────────┼───────────────────────┼─────────────────────────  │
-│    Order Submission    │ submit_order()        │ Market/Limit/Stop orders  │
-│    Order Cancellation  │ cancel_order()        │ Cancel pending orders     │
-│    Position Query      │ get_positions()       │ Current holdings          │
-│    Account Info        │ get_account()         │ Buying power, equity      │
-│    Order Status        │ get_order()           │ Order state lookup        │
+│    Capability          │ Method                │ Description                │
+│   ─────────────────────┼───────────────────────┼─────────────────────────   │
+│    Order Submission    │ submit_order()        │ Market/Limit/Stop orders   │
+│    Order Cancellation  │ cancel_order()        │ Cancel pending orders      │
+│    Position Query      │ get_positions()       │ Current holdings           │
+│    Account Info        │ get_account()         │ Buying power, equity       │
+│    Order Status        │ get_order()           │ Order state lookup         │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 
@@ -397,13 +397,13 @@ MAX_DAILY_LOSS=500
 │                          ALPACA STREAM ADAPTER                              │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│    Feature             │ Implementation        │ Notes                     │
-│   ─────────────────────┼───────────────────────┼─────────────────────────  │
-│    Connection          │ WebSocket (async)     │ Auto-reconnect enabled    │
-│    Data Buffer         │ Ring Buffer           │ Configurable depth        │
-│    Feed Options        │ IEX / SIP             │ Based on subscription     │
-│    Test Mode           │ FAKEPACA stream       │ 24/7 synthetic data       │
-│    Subscriptions       │ Trades, Quotes, Bars  │ Per-symbol granularity    │
+│    Feature             │ Implementation        │ Notes                      │
+│   ─────────────────────┼───────────────────────┼─────────────────────────   │
+│    Connection          │ WebSocket (async)     │ Auto-reconnect enabled     │
+│    Data Buffer         │ Ring Buffer           │ Configurable depth         │
+│    Feed Options        │ IEX / SIP             │ Based on subscription      │
+│    Test Mode           │ FAKEPACA stream       │ 24/7 synthetic data        │
+│    Subscriptions       │ Trades, Quotes, Bars  │ Per-symbol granularity     │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -453,48 +453,48 @@ MAX_DAILY_LOSS=500
     ┌─────────────────────────────────────────────────────────────────────────┐
     │                         INGEST PIPELINE                                 │
     │                                                                         │
-    │    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐       │
-    │    │   PDF    │───►│  Chunk   │───►│  Embed   │───►│  Store   │       │
-    │    │  Source  │    │  (1000   │    │ (Ollama) │    │ (Chroma) │       │
-    │    │          │    │  /150)   │    │          │    │          │       │
-    │    └──────────┘    └──────────┘    └──────────┘    └──────────┘       │
-    │         │                                               │             │
-    │         │         chunk_size: 1000 tokens               │             │
-    │         │         chunk_overlap: 150 tokens             │             │
-    │         │                                               ▼             │
-    │         │                                    ┌──────────────────┐     │
-    │         └───────────────────────────────────►│  data/chroma/    │     │
-    │                                              │  (Vector Store)  │     │
-    │                                              └──────────────────┘     │
+    │    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐         │
+    │    │   PDF    │───►│  Chunk   │───►│  Embed   │───►│  Store   │         │ 
+    │    │  Source  │    │  (1000   │    │ (Ollama) │    │ (Chroma) │         │
+    │    │          │    │  /150)   │    │          │    │          │         │
+    │    └──────────┘    └──────────┘    └──────────┘    └──────────┘         │
+    │         │                                               │               │
+    │         │         chunk_size: 1000 tokens               │               │
+    │         │         chunk_overlap: 150 tokens             │               │
+    │         │                                               ▼               │
+    │         │                                    ┌──────────────────┐       │
+    │         └───────────────────────────────────►│  data/chroma/    │       │
+    │                                              │  (Vector Store)  │       │
+    │                                              └──────────────────┘       │
     │                                                                         │
     └─────────────────────────────────────────────────────────────────────────┘
 
     ┌─────────────────────────────────────────────────────────────────────────┐
     │                          QUERY PIPELINE                                 │
     │                                                                         │
-    │    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐       │
-    │    │  Query   │───►│  Embed   │───►│ Retrieve │───►│ Generate │       │
-    │    │  Input   │    │  Query   │    │ Context  │    │ Response │       │
-    │    └──────────┘    └──────────┘    └──────────┘    └──────────┘       │
-    │                          │               │               │             │
-    │                          ▼               ▼               ▼             │
-    │                    ┌──────────┐   ┌──────────┐   ┌──────────┐         │
-    │                    │  Ollama  │   │  Chroma  │   │  Ollama  │         │
-    │                    │  Embed   │   │ Semantic │   │   LLM    │         │
-    │                    │  Model   │   │  Search  │   │  (Gen)   │         │
-    │                    └──────────┘   └──────────┘   └──────────┘         │
-    │                                                       │               │
-    │                                                       ▼               │
-    │                                              ┌──────────────────┐     │
-    │                                              │  Response with   │     │
-    │                                              │  Citations       │     │
-    │                                              └──────────────────┘     │
-    │                                                       │               │
-    │                                                       ▼               │
-    │                                              ┌──────────────────┐     │
-    │                                              │ data/db/rag.duckdb│     │
-    │                                              │  (Query Log)      │     │
-    │                                              └──────────────────┘     │
+    │    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐         │
+    │    │  Query   │───►│  Embed   │───►│ Retrieve │───►│ Generate │         │
+    │    │  Input   │    │  Query   │    │ Context  │    │ Response │         │ 
+    │    └──────────┘    └──────────┘    └──────────┘    └──────────┘         │
+    │                          │               │               │              │
+    │                          ▼               ▼               ▼              │
+    │                    ┌──────────┐   ┌──────────┐   ┌──────────┐           │
+    │                    │  Ollama  │   │  Chroma  │   │  Ollama  │           │
+    │                    │  Embed   │   │ Semantic │   │   LLM    │           │
+    │                    │  Model   │   │  Search  │   │  (Gen)   │           │
+    │                    └──────────┘   └──────────┘   └──────────┘           │
+    │                                                       │                 │
+    │                                                       ▼                 │
+    │                                              ┌──────────────────┐       │
+    │                                              │  Response with   │       │
+    │                                              │  Citations       │       │
+    │                                              └──────────────────┘       │
+    │                                                       │                 │
+    │                                                       ▼                 │
+    │                                              ┌──────────────────┐       │
+    │                                              │ data/db/rag.duckdb│      │
+    │                                              │  (Query Log)      │      │
+    │                                              └──────────────────┘       │
     │                                                                         │
     └─────────────────────────────────────────────────────────────────────────┘
 ```
@@ -578,10 +578,10 @@ python dev/chat_cli.py --symbol AAPL --days 30 --analyze
 
 #   ┌────────────────────────────────────────────────────────────┐
 #   │  Features:                                                 │
-#   │  • Fetches historical OHLCV from Alpaca                   │
-#   │  • Computes technical indicators                          │
-#   │  • Optional LLM-powered analysis via Ollama               │
-#   │  • Statistical summaries and visualizations               │
+#   │  • Fetches historical OHLCV from Alpaca                    │
+#   │  • Computes technical indicators                           │
+#   │  • Optional LLM-powered analysis via Ollama                │
+#   │  • Statistical summaries and visualizations                │
 #   └────────────────────────────────────────────────────────────┘
 ```
 
@@ -596,7 +596,7 @@ python dev/test_alpaca_stream.py
 
 #   ┌────────────────────────────────────────────────────────────┐
 #   │  Workflow:                                                 │
-#   │  1. Connects to Alpaca WebSocket                          │
+#   │  1. Connects to Alpaca WebSocket                           │
 #   │  2. Subscribes to configured symbols                       │
 #   │  3. Prints first 5 incoming messages                       │
 #   │  4. Exits cleanly                                          │
@@ -616,7 +616,7 @@ python dev/test_alpaca_stream.py
                                 ╱ E2E╲
                                ╱──────╲
                               ╱        ╲
-                             ╱Integration╲
+                             Integration╲
                             ╱────────────╲
                            ╱              ╲
                           ╱   Unit Tests   ╲
@@ -666,18 +666,18 @@ pytest --cov=src --cov-report=html tests/
 │                        ALPACA TEST STREAM MODES                             │
 ├─────────────────────────┬───────────────────────────────────────────────────┤
 │                         │                                                   │
-│   TEST MODE (24/7)      │   LIVE MODE (Market Hours)                       │
-│   ─────────────────     │   ──────────────────────                         │
+│   TEST MODE (24/7)      │   LIVE MODE (Market Hours)                        │
+│   ─────────────────     │   ──────────────────────                          │
 │                         │                                                   │
-│   ALPACA_USE_TEST_      │   ALPACA_USE_TEST_                               │
-│   STREAM=true           │   STREAM=false                                   │
+│   ALPACA_USE_TEST_      │   ALPACA_USE_TEST_                                │
+│   STREAM=true           │   STREAM=false                                    │
 │                         │                                                   │
 │   Endpoint:             │   Endpoint:                                       │
-│   wss://stream.data.    │   wss://stream.data.                             │
-│   alpaca.markets/v2/    │   alpaca.markets/v2/                             │
-│   test                  │   iex (or /sip)                                  │
+│   wss://stream.data.    │   wss://stream.data.                              │
+│   alpaca.markets/v2/    │   alpaca.markets/v2/                              │
+│   test                  │   iex (or /sip)                                   │
 │                         │                                                   │
-│   Symbol: FAKEPACA      │   Symbols: Real (AAPL, etc)                      │
+│   Symbol: FAKEPACA      │   Symbols: Real (AAPL, etc)                       │
 │                         │                                                   │
 │   ✓ Works 24/7          │   ✓ Real market data                             │
 │   ✓ Dev/Testing         │   ✓ Production use                               │
