@@ -208,29 +208,82 @@
             </div>
 
             <div class="arch-diagram-container reveal">
-                <div class="arch-diagram">
-                    <pre>
-┌─────────────────────────────────────────────────────────────────────┐
-│                         EXTERNAL WORLD                              │
-│              (Brokers, APIs, Databases, Data Feeds)                 │
-└────────────────────────────────┬────────────────────────────────────┘
-                                 │
-┌────────────────────────────────▼────────────────────────────────────┐
-│  ADAPTERS    AlpacaBroker │ TimescaleDB │ ChromaDB │ GNews          │
-└────────────────────────────────┬────────────────────────────────────┘
-                                 │
-┌────────────────────────────────▼────────────────────────────────────┐
-│  PORTS       BrokerPort │ StreamPort │ StorePort │ ResearchPort     │
-└────────────────────────────────┬────────────────────────────────────┘
-                                 │
-┌────────────────────────────────▼────────────────────────────────────┐
-│  APPLICATION    EventBus │ RiskService │ ExecutionSvc │ KillSwitch  │
-└────────────────────────────────┬────────────────────────────────────┘
-                                 │
-┌────────────────────────────────▼────────────────────────────────────┐
-│  DOMAIN      Models │ Events │ Strategies │ Risk Rules (NO I/O)     │
-└─────────────────────────────────────────────────────────────────────┘
-                    </pre>
+                <div class="arch-visual">
+                    <!-- External World -->
+                    <div class="arch-box external">
+                        <div class="arch-box-label">External World</div>
+                        <div class="arch-box-items">
+                            <span>Brokers</span>
+                            <span>APIs</span>
+                            <span>Databases</span>
+                            <span>Data Feeds</span>
+                        </div>
+                    </div>
+
+                    <div class="arch-connector">
+                        <div class="connector-line"></div>
+                        <div class="connector-arrow"></div>
+                    </div>
+
+                    <!-- Adapters -->
+                    <div class="arch-box adapters">
+                        <div class="arch-box-label">Adapters</div>
+                        <div class="arch-box-items">
+                            <span class="adapter-tag">AlpacaBroker</span>
+                            <span class="adapter-tag">TimescaleDB</span>
+                            <span class="adapter-tag">ChromaDB</span>
+                            <span class="adapter-tag">GNews</span>
+                        </div>
+                    </div>
+
+                    <div class="arch-connector">
+                        <div class="connector-line"></div>
+                        <div class="connector-arrow"></div>
+                    </div>
+
+                    <!-- Ports -->
+                    <div class="arch-box ports">
+                        <div class="arch-box-label">Ports</div>
+                        <div class="arch-box-items">
+                            <span class="port-tag">BrokerPort</span>
+                            <span class="port-tag">StreamPort</span>
+                            <span class="port-tag">StorePort</span>
+                            <span class="port-tag">ResearchPort</span>
+                        </div>
+                    </div>
+
+                    <div class="arch-connector">
+                        <div class="connector-line"></div>
+                        <div class="connector-arrow"></div>
+                    </div>
+
+                    <!-- Application -->
+                    <div class="arch-box application">
+                        <div class="arch-box-label">Application</div>
+                        <div class="arch-box-items">
+                            <span class="app-tag">EventBus</span>
+                            <span class="app-tag">RiskService</span>
+                            <span class="app-tag">ExecutionSvc</span>
+                            <span class="app-tag">KillSwitch</span>
+                        </div>
+                    </div>
+
+                    <div class="arch-connector">
+                        <div class="connector-line"></div>
+                        <div class="connector-arrow"></div>
+                    </div>
+
+                    <!-- Domain -->
+                    <div class="arch-box domain">
+                        <div class="arch-box-label">Domain</div>
+                        <div class="arch-box-subtitle">Pure Logic &mdash; No I/O</div>
+                        <div class="arch-box-items">
+                            <span class="domain-tag">Models</span>
+                            <span class="domain-tag">Events</span>
+                            <span class="domain-tag">Strategies</span>
+                            <span class="domain-tag">Risk Rules</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

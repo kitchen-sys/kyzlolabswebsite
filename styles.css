@@ -1394,44 +1394,216 @@ body {
     line-height: 1.7;
 }
 
-/* Architecture Diagram */
+/* Architecture Diagram - Visual Version */
 .arch-diagram-container {
     display: flex;
     justify-content: center;
+    padding: 20px 0;
 }
 
-.arch-diagram {
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    padding: 40px;
-    max-width: 100%;
-    overflow-x: auto;
+.arch-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    max-width: 700px;
+    width: 100%;
+}
+
+/* Architecture Box - Base Styles */
+.arch-box {
+    width: 100%;
+    padding: 20px 28px;
+    border-radius: 12px;
+    text-align: center;
+    position: relative;
+    transition: all 0.4s var(--ease-out-expo);
+}
+
+.arch-box:hover {
+    transform: scale(1.02);
+}
+
+.arch-box-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.arch-box-subtitle {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    font-style: italic;
+}
+
+.arch-box-items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.arch-box-items span {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+/* External World */
+.arch-box.external {
+    background: linear-gradient(135deg, rgba(100, 100, 120, 0.15) 0%, rgba(80, 80, 100, 0.1) 100%);
+    border: 1px solid rgba(150, 150, 170, 0.2);
+}
+
+.arch-box.external .arch-box-label {
+    color: var(--text-secondary);
+}
+
+.arch-box.external .arch-box-items span {
+    background: rgba(150, 150, 170, 0.15);
+    border: 1px solid rgba(150, 150, 170, 0.2);
+    color: var(--text-secondary);
+}
+
+/* Adapters Layer */
+.arch-box.adapters {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(99, 102, 241, 0.08) 100%);
+    border: 1px solid rgba(139, 92, 246, 0.25);
+}
+
+.arch-box.adapters .arch-box-label {
+    color: #a78bfa;
+}
+
+.adapter-tag {
+    background: rgba(139, 92, 246, 0.15) !important;
+    border: 1px solid rgba(139, 92, 246, 0.3) !important;
+    color: #c4b5fd !important;
+}
+
+/* Ports Layer */
+.arch-box.ports {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 150, 200, 0.05) 100%);
+    border: 1px solid rgba(0, 212, 255, 0.25);
+}
+
+.arch-box.ports .arch-box-label {
+    color: var(--accent-cyan);
+}
+
+.port-tag {
+    background: rgba(0, 212, 255, 0.12) !important;
+    border: 1px solid rgba(0, 212, 255, 0.3) !important;
+    color: var(--accent-cyan-bright) !important;
+}
+
+/* Application Layer */
+.arch-box.application {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(10, 150, 100, 0.05) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.arch-box.application .arch-box-label {
+    color: var(--accent-emerald);
+}
+
+.app-tag {
+    background: rgba(16, 185, 129, 0.12) !important;
+    border: 1px solid rgba(16, 185, 129, 0.3) !important;
+    color: #6ee7b7 !important;
+}
+
+/* Domain Layer - Core/Highlighted */
+.arch-box.domain {
+    background: linear-gradient(135deg, rgba(201, 162, 39, 0.12) 0%, rgba(180, 140, 30, 0.08) 100%);
+    border: 2px solid rgba(201, 162, 39, 0.4);
+    box-shadow:
+        0 0 30px rgba(201, 162, 39, 0.1),
+        inset 0 0 20px rgba(201, 162, 39, 0.05);
+}
+
+.arch-box.domain .arch-box-label {
+    color: var(--accent-gold);
+    font-size: 0.8rem;
+}
+
+.domain-tag {
+    background: rgba(201, 162, 39, 0.15) !important;
+    border: 1px solid rgba(201, 162, 39, 0.4) !important;
+    color: var(--accent-gold-bright) !important;
+}
+
+/* Connectors */
+.arch-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 32px;
     position: relative;
 }
 
-.arch-diagram::before {
+.connector-line {
+    width: 2px;
+    height: 20px;
+    background: linear-gradient(180deg, rgba(201, 162, 39, 0.4) 0%, rgba(0, 212, 255, 0.4) 100%);
+}
+
+.connector-arrow {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid rgba(0, 212, 255, 0.5);
+}
+
+/* Animated data flow effect */
+.arch-connector::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg,
-        transparent 0%,
-        var(--accent-gold) 25%,
-        var(--accent-cyan) 50%,
-        var(--accent-gold) 75%,
-        transparent 100%);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: var(--accent-cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent-cyan);
+    animation: dataFlow 2s ease-in-out infinite;
+    opacity: 0;
 }
 
-.arch-diagram pre {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    line-height: 1.5;
-    color: var(--text-muted);
-    white-space: pre;
-    margin: 0;
+.arch-connector:nth-child(2)::before { animation-delay: 0s; }
+.arch-connector:nth-child(4)::before { animation-delay: 0.4s; }
+.arch-connector:nth-child(6)::before { animation-delay: 0.8s; }
+.arch-connector:nth-child(8)::before { animation-delay: 1.2s; }
+.arch-connector:nth-child(10)::before { animation-delay: 1.6s; }
+
+@keyframes dataFlow {
+    0% { top: 0; opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .arch-box {
+        padding: 16px 20px;
+    }
+
+    .arch-box-items span {
+        font-size: 0.65rem;
+        padding: 4px 10px;
+    }
+
+    .arch-box-label {
+        font-size: 0.65rem;
+    }
 }
 
 /* ============================================
