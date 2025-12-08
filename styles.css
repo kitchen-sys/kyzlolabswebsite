@@ -2690,3 +2690,384 @@ body {
     mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
     -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
 }
+
+/* ============================================
+   HERO - CENTERED LAYOUT
+   Business-focused hero section
+   ============================================ */
+.hero-centered {
+    grid-template-columns: 1fr;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.hero-centered .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero-brand {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    margin-bottom: 24px;
+    position: relative;
+    display: inline-block;
+}
+
+.hero-brand::before,
+.hero-brand::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-gold));
+}
+
+.hero-brand::before {
+    right: calc(100% + 16px);
+}
+
+.hero-brand::after {
+    left: calc(100% + 16px);
+    background: linear-gradient(90deg, var(--accent-gold), transparent);
+}
+
+.hero-centered .hero-subtitle {
+    max-width: 720px;
+    text-align: center;
+}
+
+.hero-support {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    font-style: italic;
+}
+
+.hero-centered .hero-buttons {
+    justify-content: center;
+}
+
+/* ============================================
+   CLIENTS SECTION
+   Who we work with grid
+   ============================================ */
+.clients-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+}
+
+.client-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 32px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.client-card:hover {
+    border-color: rgba(0, 212, 255, 0.25);
+    transform: translateY(-4px);
+}
+
+.client-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 24px;
+    width: 48px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-cyan), transparent);
+    border-radius: 2px;
+}
+
+.client-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 20px;
+    border: 2px solid var(--accent-cyan);
+    border-radius: 12px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.client-icon::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold));
+    border-radius: 4px;
+}
+
+.client-card h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+.client-card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+/* ============================================
+   PROBLEMS SECTION
+   Business problems we solve
+   ============================================ */
+.problems-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+}
+
+.problem-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 36px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.problem-card:hover {
+    border-color: rgba(201, 162, 39, 0.3);
+}
+
+.problem-card::before {
+    content: '"';
+    position: absolute;
+    top: 20px;
+    left: 28px;
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    opacity: 0.15;
+    line-height: 1;
+    font-family: Georgia, serif;
+}
+
+.problem-quote {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    line-height: 1.6;
+    font-style: italic;
+    position: relative;
+    z-index: 1;
+}
+
+.problem-solution {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.75;
+    padding-top: 16px;
+    border-top: 1px solid var(--glass-border);
+}
+
+/* ============================================
+   EDGE SECTION
+   Why Kyzlo Labs - our competitive edge
+   ============================================ */
+.edge-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+}
+
+.edge-card {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(201, 162, 39, 0.03) 100%);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 36px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.edge-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-gold));
+    opacity: 0.6;
+}
+
+.edge-card:hover {
+    border-color: rgba(0, 212, 255, 0.25);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.edge-card h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+    color: var(--accent-cyan);
+}
+
+.edge-card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.75;
+}
+
+/* ============================================
+   TECHNICAL SECTION
+   Light technical credibility
+   ============================================ */
+.technical-block {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 60px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.technical-block::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+}
+
+.technical-header {
+    margin-bottom: 32px;
+}
+
+.technical-header h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-top: 16px;
+}
+
+.technical-content p {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    max-width: 700px;
+    margin: 0 auto 28px;
+}
+
+.tech-methods {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin: 32px 0;
+}
+
+.method-tag {
+    padding: 10px 20px;
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--accent-cyan);
+    transition: all 0.3s ease;
+}
+
+.method-tag:hover {
+    background: rgba(0, 212, 255, 0.15);
+    border-color: rgba(0, 212, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.technical-note {
+    font-style: italic;
+    color: var(--text-muted) !important;
+    font-size: 0.95rem !important;
+}
+
+/* ============================================
+   FOOTER UPDATES
+   Disclaimer styling
+   ============================================ */
+.footer-content {
+    flex: 1;
+}
+
+.footer-disclaimer {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-top: 12px;
+    max-width: 600px;
+    line-height: 1.6;
+}
+
+/* About section h2 styling */
+.about-text h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 16px 0 24px;
+}
+
+/* ============================================
+   RESPONSIVE - NEW SECTIONS
+   ============================================ */
+@media (max-width: 768px) {
+    .clients-grid,
+    .problems-grid,
+    .edge-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-brand::before,
+    .hero-brand::after {
+        display: none;
+    }
+
+    .technical-block {
+        padding: 40px 24px;
+    }
+
+    .method-tag {
+        font-size: 0.75rem;
+        padding: 8px 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .problem-quote {
+        font-size: 1rem;
+    }
+
+    .client-card,
+    .problem-card,
+    .edge-card {
+        padding: 28px 24px;
+    }
+}
