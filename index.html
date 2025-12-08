@@ -5,14 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Kyzlo Labs - Institutional-grade algorithmic trading and sports analytics platform built on hexagonal architecture.">
     <title>Kyzlo Labs | Quant Finance & Sports Analytics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Animated Background -->
+    <div class="bg-grid"></div>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    <div class="scanlines"></div>
+
     <!-- Navigation -->
     <nav class="nav" id="nav">
         <div class="nav-container">
             <a href="#hero" class="nav-logo">
-                <span class="logo-icon"></span>
+                <span class="logo-icon">
+                    <span class="logo-inner"></span>
+                </span>
                 <span class="logo-text">Kyzlo Labs</span>
             </a>
             <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
@@ -24,9 +50,9 @@
                 <li><a href="#hero">Home</a></li>
                 <li><a href="#platform">Platform</a></li>
                 <li><a href="#architecture">Architecture</a></li>
-                <li><a href="#sports">Sports Analytics</a></li>
+                <li><a href="#sports">Analytics</a></li>
                 <li><a href="#features">Features</a></li>
-                <li><a href="#quickstart">Quick Start</a></li>
+                <li><a href="#quickstart">Setup</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -37,7 +63,11 @@
     <section class="hero" id="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <h1 class="hero-title">Quantitative Research Lab for Finance & Sports</h1>
+                <div class="hero-eyebrow">Institutional-Grade Infrastructure</div>
+                <h1 class="hero-title">
+                    <span class="gradient-text">Quantitative Research Lab</span><br>
+                    for Finance & Sports
+                </h1>
                 <p class="hero-subtitle">Production-grade algorithmic trading and forecasting platform built on hexagonal architecture. Modular, event-driven, and designed for serious operators.</p>
                 <div class="hero-tags">
                     <span class="tag">Quant Finance</span>
@@ -92,24 +122,33 @@
     <!-- Platform Overview -->
     <section class="section platform" id="platform">
         <div class="container">
-            <h2 class="section-title">Platform Overview</h2>
-            <p class="section-intro">Kyzlo is a production-grade system built on Hexagonal Architecture (Ports & Adapters). Pure domain logic stays isolated from external infrastructure&mdash;brokers, data feeds, databases swap in and out without touching core business rules.</p>
+            <div class="section-header reveal">
+                <div class="section-eyebrow">The Platform</div>
+                <h2 class="section-title">Platform Overview</h2>
+                <p class="section-intro">Kyzlo is a production-grade system built on Hexagonal Architecture (Ports & Adapters). Pure domain logic stays isolated from external infrastructure&mdash;brokers, data feeds, databases swap in and out without touching core business rules.</p>
+            </div>
 
-            <div class="platform-grid">
+            <div class="platform-grid stagger-children">
                 <article class="platform-card">
-                    <div class="card-icon icon-finance"></div>
+                    <div class="card-icon">
+                        <div class="card-icon-inner"></div>
+                    </div>
                     <h3>Quant Finance Engine</h3>
                     <p>Event-driven trading with real-time market data streaming, strategy execution, and automated order routing. Connects to Alpaca for execution, TimescaleDB for tick storage, and supports multiple concurrent strategies.</p>
                 </article>
 
                 <article class="platform-card">
-                    <div class="card-icon icon-sports"></div>
+                    <div class="card-icon">
+                        <div class="card-icon-inner"></div>
+                    </div>
                     <h3>Sports Analytics Engine</h3>
                     <p>The same battle-tested architecture applied to sports forecasting. Pluggable data adapters ingest game stats, player metrics, and historical outcomes. Model layer remains pure&mdash;no vendor lock-in.</p>
                 </article>
 
                 <article class="platform-card">
-                    <div class="card-icon icon-forecast"></div>
+                    <div class="card-icon">
+                        <div class="card-icon-inner"></div>
+                    </div>
                     <h3>Forecasting Services</h3>
                     <p>Research RAG system with semantic document search, LLM-powered analysis, and structured query logging. Ingest PDFs, query with natural language, track prediction accuracy over time.</p>
                 </article>
@@ -120,10 +159,13 @@
     <!-- Architecture Section -->
     <section class="section architecture" id="architecture">
         <div class="container">
-            <h2 class="section-title">Hexagonal Architecture</h2>
-            <p class="section-intro">Clean separation between what the system does and how it connects to the outside world. Domain logic has zero I/O dependencies. Swap brokers, databases, or data feeds without rewriting business rules.</p>
+            <div class="section-header reveal">
+                <div class="section-eyebrow">System Design</div>
+                <h2 class="section-title">Hexagonal Architecture</h2>
+                <p class="section-intro">Clean separation between what the system does and how it connects to the outside world. Domain logic has zero I/O dependencies. Swap brokers, databases, or data feeds without rewriting business rules.</p>
+            </div>
 
-            <div class="arch-layers">
+            <div class="arch-layers stagger-children">
                 <div class="arch-layer">
                     <h3>Domain Layer</h3>
                     <p>Pure business logic with no external dependencies. Models (Tick, Order, Position, Fill), Events (TickEvent, SignalEvent, FillEvent), Strategies (GoldenCross, MeanReversion), and Risk Rules (position limits, drawdown thresholds).</p>
@@ -145,7 +187,7 @@
                 </div>
             </div>
 
-            <div class="arch-diagram-container">
+            <div class="arch-diagram-container reveal">
                 <div class="arch-diagram">
                     <pre>
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -177,10 +219,13 @@
     <!-- Sports Analytics Section -->
     <section class="section sports" id="sports">
         <div class="container">
-            <h2 class="section-title">Sports Analytics & Forecasting</h2>
-            <p class="section-intro">Same architectural rigor applied to sports modeling. The platform's event-driven core and pluggable adapters translate directly to game prediction, season projections, and edge detection.</p>
+            <div class="section-header reveal">
+                <div class="section-eyebrow">Edge Detection</div>
+                <h2 class="section-title">Sports Analytics & Forecasting</h2>
+                <p class="section-intro">Same architectural rigor applied to sports modeling. The platform's event-driven core and pluggable adapters translate directly to game prediction, season projections, and edge detection.</p>
+            </div>
 
-            <div class="sports-grid">
+            <div class="sports-grid stagger-children">
                 <div class="sports-feature">
                     <h3>Matchup Simulations</h3>
                     <p>Monte Carlo simulations for game outcomes. Domain models encode team strength, matchup factors, and situational adjustments. Run thousands of scenarios without touching data ingestion code.</p>
@@ -207,9 +252,12 @@
     <!-- Features Section -->
     <section class="section features" id="features">
         <div class="container">
-            <h2 class="section-title">Core Capabilities</h2>
+            <div class="section-header reveal">
+                <div class="section-eyebrow">Capabilities</div>
+                <h2 class="section-title">Core Features</h2>
+            </div>
 
-            <div class="features-grid">
+            <div class="features-grid stagger-children">
                 <article class="feature-card">
                     <div class="feature-icon"></div>
                     <h3>Trading & Execution</h3>
@@ -260,11 +308,14 @@
     <!-- Quick Start Section -->
     <section class="section quickstart" id="quickstart">
         <div class="container">
-            <h2 class="section-title">Quick Start</h2>
-            <p class="section-intro">Get the trading engine running locally in five steps. Requires Python 3.11+, Docker, and Alpaca API credentials.</p>
+            <div class="section-header reveal">
+                <div class="section-eyebrow">Get Started</div>
+                <h2 class="section-title">Quick Start</h2>
+                <p class="section-intro">Get the trading engine running locally in five steps. Requires Python 3.11+, Docker, and Alpaca API credentials.</p>
+            </div>
 
             <div class="steps">
-                <div class="step">
+                <div class="step reveal">
                     <div class="step-number">1</div>
                     <div class="step-content">
                         <h3>Clone & Setup</h3>
@@ -277,7 +328,7 @@ source venv/bin/activate</code></pre>
                     </div>
                 </div>
 
-                <div class="step">
+                <div class="step reveal">
                     <div class="step-number">2</div>
                     <div class="step-content">
                         <h3>Install Dependencies</h3>
@@ -287,7 +338,7 @@ source venv/bin/activate</code></pre>
                     </div>
                 </div>
 
-                <div class="step">
+                <div class="step reveal">
                     <div class="step-number">3</div>
                     <div class="step-content">
                         <h3>Configure Environment</h3>
@@ -301,7 +352,7 @@ source venv/bin/activate</code></pre>
                     </div>
                 </div>
 
-                <div class="step">
+                <div class="step reveal">
                     <div class="step-number">4</div>
                     <div class="step-content">
                         <h3>Launch Infrastructure</h3>
@@ -311,7 +362,7 @@ source venv/bin/activate</code></pre>
                     </div>
                 </div>
 
-                <div class="step">
+                <div class="step reveal">
                     <div class="step-number">5</div>
                     <div class="step-content">
                         <h3>Run Trading Engine</h3>
@@ -327,27 +378,30 @@ source venv/bin/activate</code></pre>
     <!-- About Section -->
     <section class="section about" id="about">
         <div class="container">
-            <h2 class="section-title">About Kyzlo Labs</h2>
+            <div class="section-header reveal">
+                <div class="section-eyebrow">The Lab</div>
+                <h2 class="section-title">About Kyzlo Labs</h2>
+            </div>
 
             <div class="about-content">
-                <div class="about-text">
+                <div class="about-text reveal">
                     <p>Kyzlo Labs builds infrastructure for quantitative research and systematic trading. The platform reflects a simple belief: clean architecture compounds. Separating domain logic from I/O means strategies survive broker API changes, database migrations, and data feed swaps.</p>
                     <p>Founded by Clark Kitchen, the lab focuses on institutional-grade systems that work the same way in backtest and production. No shortcuts, no magic&mdash;just hexagonal architecture, event-driven flows, and rigorous testing.</p>
                 </div>
 
-                <div class="founder-card">
-                    <div class="founder-avatar"></div>
+                <div class="founder-card reveal">
+                    <div class="founder-avatar">CK</div>
                     <h3>Clark Kitchen</h3>
                     <p class="founder-title">Founder</p>
                     <div class="founder-links">
                         <a href="https://github.com/kitchen-sys" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">
-                            <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
                         </a>
                         <a href="https://x.com/clarkkitchen" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="X/Twitter">
-                            <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                         </a>
                         <a href="https://linkedin.com/in/clarkkitchen" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
-                            <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                         </a>
                     </div>
                 </div>
@@ -358,18 +412,21 @@ source venv/bin/activate</code></pre>
     <!-- Contact Section -->
     <section class="section contact" id="contact">
         <div class="container">
-            <h2 class="section-title">Get in Touch</h2>
-            <p class="section-intro">Interested in the platform or have questions about the architecture? Send a message or reach out directly.</p>
+            <div class="section-header reveal">
+                <div class="section-eyebrow">Connect</div>
+                <h2 class="section-title">Get in Touch</h2>
+                <p class="section-intro">Interested in the platform or have questions about the architecture? Send a message or reach out directly.</p>
+            </div>
 
-            <div class="contact-wrapper">
+            <div class="contact-wrapper reveal">
                 <form class="contact-form" id="contact-form">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required>
+                        <input type="text" id="name" name="name" required autocomplete="name">
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
+                        <input type="email" id="email" name="email" required autocomplete="email">
                     </div>
                     <div class="form-group">
                         <label for="message">Message</label>
