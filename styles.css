@@ -393,6 +393,17 @@ body::after {
     text-transform: uppercase;
     letter-spacing: 1px;
     color: var(--text-secondary);
+    flex: 1;
+}
+
+.ticker-time {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent-cyan);
+    background: rgba(0, 212, 255, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+    letter-spacing: 1px;
 }
 
 .metric-row {
@@ -414,12 +425,63 @@ body::after {
     color: var(--text-primary);
 }
 
+.metric-value.mono {
+    font-variant-numeric: tabular-nums;
+}
+
 .metric-value.regime-bullish {
     color: #10b981;
 }
 
+.metric-value.regime-bearish {
+    color: #ef4444;
+}
+
+.metric-value.regime-neutral {
+    color: var(--accent-gold);
+}
+
 .metric-value.highlight {
     color: var(--accent-cyan);
+}
+
+/* Edge value special styling */
+.edge-row {
+    background: rgba(0, 212, 255, 0.05);
+    margin: 8px -24px;
+    padding: 12px 24px !important;
+    border-bottom: none !important;
+}
+
+.edge-value {
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: color 0.3s ease, transform 0.15s ease;
+}
+
+.edge-value.positive {
+    color: #10b981;
+    text-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+}
+
+.edge-value.negative {
+    color: #ef4444;
+    text-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+.edge-value.flash {
+    transform: scale(1.1);
+}
+
+/* Value update animation */
+.metric-value.updating {
+    animation: valueFlash 0.3s ease;
+}
+
+@keyframes valueFlash {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; color: var(--accent-cyan); }
+    100% { opacity: 1; }
 }
 
 .metrics-adapters {
@@ -433,12 +495,45 @@ body::after {
 
 .adapter-chip {
     padding: 4px 10px;
-    background: rgba(212, 168, 85, 0.15);
-    border: 1px solid rgba(212, 168, 85, 0.3);
+    background: rgba(100, 100, 120, 0.15);
+    border: 1px solid rgba(100, 100, 120, 0.3);
     border-radius: 4px;
     font-size: 0.75rem;
-    color: var(--accent-gold);
+    color: var(--text-muted);
     font-family: var(--font-mono);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.adapter-chip.active {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: rgba(16, 185, 129, 0.4);
+    color: #10b981;
+}
+
+.adapter-chip.active::before {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    background: #10b981;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+.adapter-chip.processing {
+    background: rgba(0, 212, 255, 0.15);
+    border-color: rgba(0, 212, 255, 0.4);
+    color: var(--accent-cyan);
+    animation: adapterPulse 0.8s ease infinite;
+}
+
+@keyframes adapterPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
 }
 
 /* ============================================

@@ -51,32 +51,37 @@
                 </div>
             </div>
             <div class="hero-card">
-                <div class="metrics-card">
+                <div class="metrics-card" id="live-ticker">
                     <div class="metrics-header">
                         <span class="metrics-dot"></span>
-                        <span class="metrics-title">System Status</span>
+                        <span class="metrics-title">Live Model Output</span>
+                        <span class="ticker-time" id="ticker-time">00:00:00</span>
                     </div>
                     <div class="metrics-body">
                         <div class="metric-row">
-                            <span class="metric-label">Regime</span>
-                            <span class="metric-value regime-bullish">BULLISH</span>
+                            <span class="metric-label">Market Regime</span>
+                            <span class="metric-value" id="regime-value">BULLISH</span>
                         </div>
                         <div class="metric-row">
-                            <span class="metric-label">Risk Level</span>
-                            <span class="metric-value">0.42</span>
+                            <span class="metric-label">Volatility Index</span>
+                            <span class="metric-value" id="volatility-value">0.42</span>
                         </div>
                         <div class="metric-row">
-                            <span class="metric-label">Edge Score</span>
-                            <span class="metric-value highlight">+2.3%</span>
+                            <span class="metric-label">Signal Confidence</span>
+                            <span class="metric-value" id="confidence-value">87%</span>
+                        </div>
+                        <div class="metric-row edge-row">
+                            <span class="metric-label">Real-Time Edge</span>
+                            <span class="metric-value edge-value" id="edge-value">+2.34%</span>
                         </div>
                         <div class="metric-row">
-                            <span class="metric-label">Active Adapters</span>
-                            <span class="metric-value">6</span>
+                            <span class="metric-label">Ticks Processed</span>
+                            <span class="metric-value mono" id="ticks-value">1,247,892</span>
                         </div>
                         <div class="metrics-adapters">
-                            <span class="adapter-chip">Alpaca</span>
-                            <span class="adapter-chip">TimescaleDB</span>
-                            <span class="adapter-chip">ChromaDB</span>
+                            <span class="adapter-chip active" id="adapter-alpaca">Alpaca</span>
+                            <span class="adapter-chip active" id="adapter-timescale">TimescaleDB</span>
+                            <span class="adapter-chip" id="adapter-chroma">ChromaDB</span>
                         </div>
                     </div>
                 </div>
