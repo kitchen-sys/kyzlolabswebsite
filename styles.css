@@ -2240,6 +2240,18 @@ body {
     margin-bottom: 0;
 }
 
+.about-headline {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
 .founder-card {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
