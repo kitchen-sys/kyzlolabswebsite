@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Kyzlo Labs - Institutional-grade algorithmic trading and sports analytics platform built on hexagonal architecture.">
-    <title>Kyzlo Labs | Quant Finance & Sports Analytics</title>
+    <meta name="description" content="Kyzlo Labs - AI-driven quant consulting for sports analytics and finance. Custom forecasting systems, trading models, and Discord bots that give clients a measurable edge.">
+    <title>Kyzlo Labs | AI-Driven Quant Consulting for Sports & Finance</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -68,11 +68,10 @@
             </button>
             <ul class="nav-links" id="nav-links">
                 <li><a href="#hero">Home</a></li>
-                <li><a href="#platform">Platform</a></li>
-                <li><a href="#architecture">Architecture</a></li>
-                <li><a href="#sports">Analytics</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#quickstart">Setup</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#why-us">Why Us</a></li>
+                <li><a href="#deliverables">Deliverables</a></li>
+                <li><a href="#technology">Technology</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -83,28 +82,28 @@
     <section class="hero" id="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <div class="hero-eyebrow">Institutional-Grade Infrastructure</div>
+                <div class="hero-eyebrow">Quant Consulting Practice</div>
                 <h1 class="hero-title">
-                    <span class="gradient-text">Quantitative Research Lab</span><br>
-                    for Finance & Sports
+                    <span class="gradient-text">AI-Driven Quant Consulting</span><br>
+                    for Sports & Finance
                 </h1>
-                <p class="hero-subtitle">Production-grade algorithmic trading and forecasting platform built on hexagonal architecture. Modular, event-driven, and designed for serious operators.</p>
+                <p class="hero-subtitle">We build custom forecasting systems, analytics dashboards, trading models, and Discord bots that give clients a measurable edge in markets and sports.</p>
                 <div class="hero-tags">
-                    <span class="tag">Quant Finance</span>
-                    <span class="tag">Sports Analytics</span>
-                    <span class="tag">Forecasting & Modeling</span>
-                    <span class="tag">Hexagonal Architecture</span>
+                    <span class="tag">Sports Forecasting</span>
+                    <span class="tag">Trading Models</span>
+                    <span class="tag">Discord Bots</span>
+                    <span class="tag">Custom Analytics</span>
                 </div>
                 <div class="hero-buttons">
-                    <a href="https://github.com/kitchen-sys" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View GitHub</a>
-                    <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+                    <a href="#contact" class="btn btn-primary">Book a Consultation</a>
+                    <a href="#services" class="btn btn-secondary">View Services</a>
                 </div>
             </div>
             <div class="hero-card">
                 <div class="metrics-card" id="live-ticker">
                     <div class="metrics-header">
                         <span class="metrics-dot"></span>
-                        <span class="metrics-title">Live Model Output</span>
+                        <span class="metrics-title">Live Example Output</span>
                         <span class="ticker-time" id="ticker-time">00:00:00</span>
                     </div>
                     <div class="metrics-body">
@@ -125,13 +124,13 @@
                             <span class="metric-value edge-value" id="edge-value">+2.34%</span>
                         </div>
                         <div class="metric-row">
-                            <span class="metric-label">Ticks Processed</span>
+                            <span class="metric-label">Signals Generated</span>
                             <span class="metric-value mono" id="ticks-value">1,247,892</span>
                         </div>
                         <div class="metrics-adapters">
-                            <span class="adapter-chip active" id="adapter-alpaca">Alpaca</span>
-                            <span class="adapter-chip active" id="adapter-timescale">TimescaleDB</span>
-                            <span class="adapter-chip" id="adapter-chroma">ChromaDB</span>
+                            <span class="adapter-chip active" id="adapter-alpaca">Finance</span>
+                            <span class="adapter-chip active" id="adapter-timescale">Sports</span>
+                            <span class="adapter-chip" id="adapter-chroma">Discord</span>
                         </div>
                     </div>
                 </div>
@@ -139,13 +138,13 @@
         </div>
     </section>
 
-    <!-- Platform Overview -->
-    <section class="section platform" id="platform">
+    <!-- Services Section -->
+    <section class="section services" id="services">
         <div class="container">
             <div class="section-header reveal">
-                <div class="section-eyebrow">The Platform</div>
-                <h2 class="section-title">Platform Overview</h2>
-                <p class="section-intro">Kyzlo is a production-grade system built on Hexagonal Architecture (Ports & Adapters). Pure domain logic stays isolated from external infrastructure&mdash;brokers, data feeds, databases swap in and out without touching core business rules.</p>
+                <div class="section-eyebrow">What We Do</div>
+                <h2 class="section-title">Our Services</h2>
+                <p class="section-intro">End-to-end quant consulting from model development to production deployment. We deliver working systems, not slide decks.</p>
             </div>
 
             <div class="platform-grid stagger-children">
@@ -153,70 +152,156 @@
                     <div class="card-icon">
                         <div class="card-icon-inner"></div>
                     </div>
-                    <h3>Quant Finance Engine</h3>
-                    <p>Event-driven trading with real-time market data streaming, strategy execution, and automated order routing. Connects to Alpaca for execution, TimescaleDB for tick storage, and supports multiple concurrent strategies.</p>
+                    <h3>Sports Analytics Consulting</h3>
+                    <p>Custom Monte Carlo game forecasts, player impact metrics, season win probability models, and market edge detection. Delivered via dashboards, APIs, or Discord bots for teams, bettors, and data startups.</p>
+                    <ul class="service-list">
+                        <li>Game outcome simulations</li>
+                        <li>Season projection models</li>
+                        <li>Edge detection vs. market odds</li>
+                        <li>Discord bot delivery</li>
+                    </ul>
                 </article>
 
                 <article class="platform-card">
                     <div class="card-icon">
                         <div class="card-icon-inner"></div>
                     </div>
-                    <h3>Sports Analytics Engine</h3>
-                    <p>The same battle-tested architecture applied to sports forecasting. Pluggable data adapters ingest game stats, player metrics, and historical outcomes. Model layer remains pure&mdash;no vendor lock-in.</p>
+                    <h3>Financial Quant Consulting</h3>
+                    <p>Market regime detection, volatility forecasting (GARCH family), portfolio optimization, and automated signal generation. Built for independent traders, fintech startups, and small funds.</p>
+                    <ul class="service-list">
+                        <li>Regime detection models</li>
+                        <li>Volatility forecasting</li>
+                        <li>Risk analytics dashboards</li>
+                        <li>Backtesting frameworks</li>
+                    </ul>
                 </article>
 
                 <article class="platform-card">
                     <div class="card-icon">
                         <div class="card-icon-inner"></div>
                     </div>
-                    <h3>Forecasting Services</h3>
-                    <p>Research RAG system with semantic document search, LLM-powered analysis, and structured query logging. Ingest PDFs, query with natural language, track prediction accuracy over time.</p>
+                    <h3>Custom AI & Bot Development</h3>
+                    <p>Discord bots that serve forecasts on command, stream daily signals, host AI Q&A for research, and enable paid subscription channels. Plus custom APIs and automated reporting tools.</p>
+                    <ul class="service-list">
+                        <li>Discord prediction bots</li>
+                        <li>Custom prediction APIs</li>
+                        <li>Automated report generation</li>
+                        <li>Dashboard development</li>
+                    </ul>
                 </article>
             </div>
         </div>
     </section>
 
-    <!-- Architecture Section -->
-    <section class="section architecture" id="architecture">
+    <!-- Why Choose Us Section -->
+    <section class="section why-us" id="why-us">
         <div class="container">
             <div class="section-header reveal">
-                <div class="section-eyebrow">System Design</div>
-                <h2 class="section-title">Hexagonal Architecture</h2>
-                <p class="section-intro">Clean separation between what the system does and how it connects to the outside world. Domain logic has zero I/O dependencies. Swap brokers, databases, or data feeds without rewriting business rules.</p>
+                <div class="section-eyebrow">The Difference</div>
+                <h2 class="section-title">Why Clients Choose Kyzlo</h2>
+                <p class="section-intro">You get quant engineering expertise without hiring a full team. Fast delivery, transparent models, and systems built for production.</p>
             </div>
 
-            <div class="arch-layers stagger-children">
-                <div class="arch-layer">
-                    <h3>Domain Layer</h3>
-                    <p>Pure business logic with no external dependencies. Models (Tick, Order, Position, Fill), Events (TickEvent, SignalEvent, FillEvent), Strategies (GoldenCross, MeanReversion), and Risk Rules (position limits, drawdown thresholds).</p>
+            <div class="sports-grid stagger-children">
+                <div class="sports-feature">
+                    <h3>Mathematically Grounded</h3>
+                    <p>Every model we build is transparent and explainable. No black boxes. You understand exactly how predictions are generated and can validate the methodology yourself.</p>
                 </div>
 
-                <div class="arch-layer">
-                    <h3>Application Layer</h3>
-                    <p>Orchestration and services. EventBus handles pub/sub messaging. RiskService validates orders. ExecutionService routes to brokers. PositionTracker maintains state. KillSwitch provides emergency stop.</p>
+                <div class="sports-feature">
+                    <h3>Fast Delivery</h3>
+                    <p>MVPs in 1-2 weeks. We ship working systems quickly, iterate based on feedback, and don't waste time on endless planning phases. Production-ready from day one.</p>
                 </div>
 
-                <div class="arch-layer">
-                    <h3>Ports Layer</h3>
-                    <p>Abstract interfaces (Python Protocols) that define contracts. BrokerPort, StreamPort, StorePort, ResearchPort, ClockPort. Domain depends only on these abstractions&mdash;never concrete implementations.</p>
+                <div class="sports-feature">
+                    <h3>Dual Domain Expertise</h3>
+                    <p>Sports and finance share core principles: edge detection, risk management, probabilistic thinking. We apply the same rigorous methodology across both domains.</p>
                 </div>
 
-                <div class="arch-layer">
-                    <h3>Adapters Layer</h3>
-                    <p>Concrete implementations that plug into ports. AlpacaBroker, AlpacaStream, TimescaleStore, ChromaOllamaResearch, LiveClock. Add new adapters without touching domain or application code.</p>
+                <div class="sports-feature">
+                    <h3>Flexible Engagements</h3>
+                    <p>One-off projects or ongoing support. Build a model once and own it, or retain us for continuous improvement. We structure engagements around your needs.</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Deliverables Section -->
+    <section class="section deliverables" id="deliverables">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-eyebrow">What You Get</div>
+                <h2 class="section-title">Example Deliverables</h2>
+                <p class="section-intro">Clients receive working systems, not theory. Here's what a typical engagement produces.</p>
+            </div>
+
+            <div class="features-grid stagger-children">
+                <article class="feature-card">
+                    <div class="feature-icon"></div>
+                    <h3>Interactive Dashboards</h3>
+                    <ul>
+                        <li>Real-time model outputs</li>
+                        <li>Historical performance tracking</li>
+                        <li>Customizable views and filters</li>
+                        <li>Mobile-responsive design</li>
+                    </ul>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon"></div>
+                    <h3>Discord Bot Integration</h3>
+                    <ul>
+                        <li>On-demand predictions via commands</li>
+                        <li>Automated daily signal broadcasts</li>
+                        <li>Subscription channel support</li>
+                        <li>AI-powered Q&A for your community</li>
+                    </ul>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon"></div>
+                    <h3>Prediction APIs</h3>
+                    <ul>
+                        <li>REST endpoints for your applications</li>
+                        <li>Real-time and batch predictions</li>
+                        <li>Full documentation included</li>
+                        <li>Usage analytics and monitoring</li>
+                    </ul>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon"></div>
+                    <h3>Model Documentation</h3>
+                    <ul>
+                        <li>Complete methodology write-up</li>
+                        <li>Backtesting results and validation</li>
+                        <li>Performance benchmarks</li>
+                        <li>Maintenance and update guides</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section class="section technology" id="technology">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-eyebrow">Under the Hood</div>
+                <h2 class="section-title">Our Technology</h2>
+                <p class="section-intro">All systems are built on hexagonal architecture&mdash;clean separation between business logic and infrastructure. This means your models survive API changes, database migrations, and data feed swaps.</p>
             </div>
 
             <div class="arch-diagram-container reveal">
                 <div class="arch-visual">
                     <!-- External World -->
                     <div class="arch-box external">
-                        <div class="arch-box-label">External World</div>
+                        <div class="arch-box-label">Data Sources</div>
                         <div class="arch-box-items">
-                            <span>Brokers</span>
-                            <span>APIs</span>
-                            <span>Databases</span>
-                            <span>Data Feeds</span>
+                            <span>Market APIs</span>
+                            <span>Sports Feeds</span>
+                            <span>News Sources</span>
+                            <span>Custom Data</span>
                         </div>
                     </div>
 
@@ -227,28 +312,12 @@
 
                     <!-- Adapters -->
                     <div class="arch-box adapters">
-                        <div class="arch-box-label">Adapters</div>
+                        <div class="arch-box-label">Data Adapters</div>
                         <div class="arch-box-items">
-                            <span class="adapter-tag">AlpacaBroker</span>
-                            <span class="adapter-tag">TimescaleDB</span>
-                            <span class="adapter-tag">ChromaDB</span>
-                            <span class="adapter-tag">GNews</span>
-                        </div>
-                    </div>
-
-                    <div class="arch-connector">
-                        <div class="connector-line"></div>
-                        <div class="connector-arrow"></div>
-                    </div>
-
-                    <!-- Ports -->
-                    <div class="arch-box ports">
-                        <div class="arch-box-label">Ports</div>
-                        <div class="arch-box-items">
-                            <span class="port-tag">BrokerPort</span>
-                            <span class="port-tag">StreamPort</span>
-                            <span class="port-tag">StorePort</span>
-                            <span class="port-tag">ResearchPort</span>
+                            <span class="adapter-tag">Market Data</span>
+                            <span class="adapter-tag">Sports Stats</span>
+                            <span class="adapter-tag">Odds Feeds</span>
+                            <span class="adapter-tag">News APIs</span>
                         </div>
                     </div>
 
@@ -259,12 +328,12 @@
 
                     <!-- Application -->
                     <div class="arch-box application">
-                        <div class="arch-box-label">Application</div>
+                        <div class="arch-box-label">Processing Layer</div>
                         <div class="arch-box-items">
-                            <span class="app-tag">EventBus</span>
-                            <span class="app-tag">RiskService</span>
-                            <span class="app-tag">ExecutionSvc</span>
-                            <span class="app-tag">KillSwitch</span>
+                            <span class="app-tag">Feature Engineering</span>
+                            <span class="app-tag">Model Inference</span>
+                            <span class="app-tag">Risk Analysis</span>
+                            <span class="app-tag">Signal Generation</span>
                         </div>
                     </div>
 
@@ -275,174 +344,29 @@
 
                     <!-- Domain -->
                     <div class="arch-box domain">
-                        <div class="arch-box-label">Domain</div>
-                        <div class="arch-box-subtitle">Pure Logic &mdash; No I/O</div>
+                        <div class="arch-box-label">Client Delivery</div>
+                        <div class="arch-box-subtitle">Dashboards &bull; APIs &bull; Discord Bots &bull; Reports</div>
                         <div class="arch-box-items">
-                            <span class="domain-tag">Models</span>
-                            <span class="domain-tag">Events</span>
-                            <span class="domain-tag">Strategies</span>
-                            <span class="domain-tag">Risk Rules</span>
+                            <span class="domain-tag">Predictions</span>
+                            <span class="domain-tag">Analytics</span>
+                            <span class="domain-tag">Alerts</span>
+                            <span class="domain-tag">Insights</span>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Sports Analytics Section -->
-    <section class="section sports" id="sports">
-        <div class="container">
-            <div class="section-header reveal">
-                <div class="section-eyebrow">Edge Detection</div>
-                <h2 class="section-title">Sports Analytics & Forecasting</h2>
-                <p class="section-intro">Same architectural rigor applied to sports modeling. The platform's event-driven core and pluggable adapters translate directly to game prediction, season projections, and edge detection.</p>
-            </div>
-
-            <div class="sports-grid stagger-children">
-                <div class="sports-feature">
-                    <h3>Matchup Simulations</h3>
-                    <p>Monte Carlo simulations for game outcomes. Domain models encode team strength, matchup factors, and situational adjustments. Run thousands of scenarios without touching data ingestion code.</p>
-                </div>
-
-                <div class="sports-feature">
-                    <h3>Season Projections</h3>
-                    <p>Forward-looking season models that update as new data arrives. Event-driven architecture means projections recalculate automatically when game results stream in.</p>
-                </div>
-
-                <div class="sports-feature">
-                    <h3>Custom Metrics</h3>
-                    <p>Build proprietary stats in the domain layer. Possession efficiency, pace-adjusted ratings, player impact scores&mdash;all computed from raw data adapters without coupling to specific APIs.</p>
-                </div>
-
-                <div class="sports-feature">
-                    <h3>Pluggable Data Sources</h3>
-                    <p>Swap between sports data providers by implementing new adapters. Same port interfaces, same domain logic, different external feeds. No vendor lock-in.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="section features" id="features">
-        <div class="container">
-            <div class="section-header reveal">
-                <div class="section-eyebrow">Capabilities</div>
-                <h2 class="section-title">Core Features</h2>
-            </div>
-
-            <div class="features-grid stagger-children">
-                <article class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>Trading & Execution</h3>
-                    <ul>
-                        <li>Real-time WebSocket market data streaming</li>
-                        <li>Market, Limit, and Stop order types</li>
-                        <li>Strategy partitioning for multi-symbol trading</li>
-                        <li>Graceful shutdown with order cleanup</li>
-                    </ul>
-                </article>
-
-                <article class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>Risk Management</h3>
-                    <ul>
-                        <li>Position size limits and concentration checks</li>
-                        <li>Drawdown thresholds with automatic flattening</li>
-                        <li>Circuit breakers for volatility spikes</li>
-                        <li>KillSwitch for emergency system halt</li>
-                    </ul>
-                </article>
-
-                <article class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>Data Infrastructure</h3>
-                    <ul>
-                        <li>TimescaleDB for tick-level time-series storage</li>
-                        <li>ChromaDB for vector embeddings and semantic search</li>
-                        <li>DuckDB for analytics and RAG query logging</li>
-                        <li>Event replay for backtesting and debugging</li>
-                    </ul>
-                </article>
-
-                <article class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>Research & RAG</h3>
-                    <ul>
-                        <li>PDF ingestion with semantic chunking</li>
-                        <li>Natural language queries over research corpus</li>
-                        <li>Local LLM generation via Ollama</li>
-                        <li>Query rating and feedback loop</li>
-                    </ul>
-                </article>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quick Start Section -->
-    <section class="section quickstart" id="quickstart">
-        <div class="container">
-            <div class="section-header reveal">
-                <div class="section-eyebrow">Get Started</div>
-                <h2 class="section-title">Quick Start</h2>
-                <p class="section-intro">Get the trading engine running locally in five steps. Requires Python 3.11+, Docker, and Alpaca API credentials.</p>
-            </div>
-
-            <div class="steps">
-                <div class="step reveal">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3>Clone & Setup</h3>
-                        <div class="code-block">
-                            <pre><code>git clone https://github.com/kitchen-sys/kyzlo-quant.git
-cd kyzlo-quant
-python -m venv venv
-source venv/bin/activate</code></pre>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="step reveal">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>Install Dependencies</h3>
-                        <div class="code-block">
-                            <pre><code>pip install -r requirements.txt</code></pre>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="step reveal">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3>Configure Environment</h3>
-                        <div class="code-block">
-                            <pre><code>cp .env.example .env
-# Edit .env with your API keys:
-# ALPACA_API_KEY, ALPACA_SECRET_KEY
-# TIMESCALE_CONNECTION_STRING
-# OLLAMA_HOST (for RAG features)</code></pre>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="step reveal">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h3>Launch Infrastructure</h3>
-                        <div class="code-block">
-                            <pre><code>docker-compose up -d</code></pre>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="step reveal">
-                    <div class="step-number">5</div>
-                    <div class="step-content">
-                        <h3>Run Trading Engine</h3>
-                        <div class="code-block">
-                            <pre><code>python main.py</code></pre>
-                        </div>
-                    </div>
+            <div class="tech-stack reveal">
+                <div class="tech-stack-title">Tech Stack</div>
+                <div class="tech-tags">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">TimescaleDB</span>
+                    <span class="tech-tag">Discord.py</span>
+                    <span class="tech-tag">FastAPI</span>
+                    <span class="tech-tag">Pandas</span>
+                    <span class="tech-tag">scikit-learn</span>
+                    <span class="tech-tag">Docker</span>
+                    <span class="tech-tag">AWS/GCP</span>
                 </div>
             </div>
         </div>
@@ -452,20 +376,20 @@ source venv/bin/activate</code></pre>
     <section class="section about" id="about">
         <div class="container">
             <div class="section-header reveal">
-                <div class="section-eyebrow">The Lab</div>
+                <div class="section-eyebrow">The Practice</div>
                 <h2 class="section-title">About Kyzlo Labs</h2>
             </div>
 
             <div class="about-content">
                 <div class="about-text reveal">
-                    <p>Kyzlo Labs builds infrastructure for quantitative research and systematic trading. The platform reflects a simple belief: clean architecture compounds. Separating domain logic from I/O means strategies survive broker API changes, database migrations, and data feed swaps.</p>
-                    <p>Founded by Clark Kitchen, the lab focuses on institutional-grade systems that work the same way in backtest and production. No shortcuts, no magic&mdash;just hexagonal architecture, event-driven flows, and rigorous testing.</p>
+                    <p>Kyzlo Labs is a quant consulting practice specializing in sports analytics and financial modeling. We build custom forecasting systems, trading models, and automated tools that give clients a measurable edge.</p>
+                    <p>Founded by Clark Kitchen, the practice focuses on delivering production-ready systems&mdash;not research papers. Whether you need a Discord bot serving daily predictions, a custom risk dashboard, or a full forecasting pipeline, we ship working code fast.</p>
                 </div>
 
                 <div class="founder-card reveal">
                     <div class="founder-avatar">CK</div>
                     <h3>Clark Kitchen</h3>
-                    <p class="founder-title">Founder</p>
+                    <p class="founder-title">Founder & Lead Engineer</p>
                     <div class="founder-links">
                         <a href="https://github.com/kitchen-sys" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">
                             <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
@@ -486,30 +410,47 @@ source venv/bin/activate</code></pre>
     <section class="section contact" id="contact">
         <div class="container">
             <div class="section-header reveal">
-                <div class="section-eyebrow">Connect</div>
-                <h2 class="section-title">Get in Touch</h2>
-                <p class="section-intro">Interested in the platform or have questions about the architecture? Send a message or reach out directly.</p>
+                <div class="section-eyebrow">Let's Work Together</div>
+                <h2 class="section-title">Start a Project</h2>
+                <p class="section-intro">Tell us about your project and we'll get back to you within 24 hours to discuss scope, timeline, and pricing.</p>
             </div>
 
             <div class="contact-wrapper reveal">
                 <form class="contact-form" id="contact-form" action="https://formspree.io/clarkkitchen22@gmail.com" method="POST" data-netlify="true" name="contact">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required autocomplete="name">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required autocomplete="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Company / Project</label>
+                            <input type="text" id="company" name="company" autocomplete="organization">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" required autocomplete="email">
                     </div>
                     <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" rows="5" required></textarea>
+                        <label for="service">What type of consulting do you need?</label>
+                        <select id="service" name="service" required>
+                            <option value="">Select a service...</option>
+                            <option value="sports">Sports Analytics & Forecasting</option>
+                            <option value="finance">Financial Quant Modeling</option>
+                            <option value="discord">Discord Bot Development</option>
+                            <option value="dashboard">Dashboard / API Development</option>
+                            <option value="other">Other / Not Sure</option>
+                        </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Send Message</button>
+                    <div class="form-group">
+                        <label for="message">Project Details</label>
+                        <textarea id="message" name="message" rows="5" required placeholder="Describe your project, goals, and timeline..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Request Consultation</button>
                 </form>
 
                 <div class="contact-direct">
-                    <p>Or email directly:</p>
+                    <p>Prefer email?</p>
                     <a href="mailto:clarkkitchen22@gmail.com" class="email-link">clarkkitchen22@gmail.com</a>
                 </div>
             </div>
@@ -519,7 +460,7 @@ source venv/bin/activate</code></pre>
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; <span id="year"></span> Kyzlo Labs. Built with precision.</p>
+            <p>&copy; <span id="year"></span> Kyzlo Labs. Quant consulting for sports & finance.</p>
             <a href="#hero" class="back-to-top">Back to top</a>
         </div>
     </footer>
