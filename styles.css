@@ -757,6 +757,7 @@ body {
 .hero-buttons {
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 /* Premium Buttons */
@@ -815,6 +816,19 @@ body {
     background: rgba(201, 162, 39, 0.1);
     transform: translateY(-3px);
     box-shadow: 0 8px 24px rgba(201, 162, 39, 0.15);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px dashed var(--text-secondary);
+    color: var(--text-primary);
+}
+
+.btn-outline:hover {
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 212, 255, 0.15);
 }
 
 /* ============================================
@@ -1168,6 +1182,35 @@ body {
     color: var(--text-secondary);
     font-size: 1.15rem;
     line-height: 1.8;
+}
+
+.section-cta {
+    margin: 70px auto 0;
+    max-width: 900px;
+    padding: 36px 40px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(16, 19, 36, 0.9));
+    border: 1px solid var(--glass-border-light);
+    box-shadow: 0 18px 60px rgba(0, 212, 255, 0.1);
+    text-align: center;
+}
+
+.section-cta h3 {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+}
+
+.section-cta p {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
 /* Reveal animation */
