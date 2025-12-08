@@ -117,106 +117,119 @@
                     <a href="#deliverables" class="btn btn-outline">Preview a Pilot</a>
                 </div>
             </div>
-            <div class="hero-card">
-                <div class="metrics-card" id="live-ticker">
-                    <div class="metrics-header">
-                        <span class="metrics-dot"></span>
-                        <span class="metrics-title">Live Example Output</span>
-                        <span class="ticker-time" id="ticker-time">00:00:00</span>
-                    </div>
-                    <div class="metrics-body">
-                        <div class="metric-row">
-                            <span class="metric-label">Market Regime</span>
-                            <span class="metric-value" id="regime-value">BULLISH</span>
+        </div>
+    </section>
+
+    <!-- Live Examples Section -->
+    <section class="section live-examples" id="live-examples">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-eyebrow">Live Demo</div>
+                <h2 class="section-title">Real-Time Model Output</h2>
+                <p class="section-intro">See our quant models in action. These widgets display simulated real-time data demonstrating the kind of analytics we deliver.</p>
+            </div>
+
+            <div class="live-examples-grid stagger-children">
+                <div class="example-card">
+                    <div class="metrics-card" id="live-ticker">
+                        <div class="metrics-header">
+                            <span class="metrics-dot"></span>
+                            <span class="metrics-title">Live Example Output</span>
+                            <span class="ticker-time" id="ticker-time">00:00:00</span>
                         </div>
-                        <div class="metric-row">
-                            <span class="metric-label">Volatility Index</span>
-                            <span class="metric-value" id="volatility-value">0.42</span>
-                        </div>
-                        <div class="metric-row">
-                            <span class="metric-label">Signal Confidence</span>
-                            <span class="metric-value" id="confidence-value">87%</span>
-                        </div>
-                        <div class="metric-row edge-row">
-                            <span class="metric-label">Real-Time Edge</span>
-                            <span class="metric-value edge-value" id="edge-value">+2.34%</span>
-                        </div>
-                        <div class="metric-row">
-                            <span class="metric-label">Signals Generated</span>
-                            <span class="metric-value mono" id="ticks-value">1,247,892</span>
-                        </div>
-                        <div class="metrics-adapters">
-                            <span class="adapter-chip active" id="adapter-alpaca">Finance</span>
-                            <span class="adapter-chip active" id="adapter-timescale">Sports</span>
-                            <span class="adapter-chip" id="adapter-chroma">Discord</span>
+                        <div class="metrics-body">
+                            <div class="metric-row">
+                                <span class="metric-label">Market Regime</span>
+                                <span class="metric-value" id="regime-value">BULLISH</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Volatility Index</span>
+                                <span class="metric-value" id="volatility-value">0.42</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Signal Confidence</span>
+                                <span class="metric-value" id="confidence-value">87%</span>
+                            </div>
+                            <div class="metric-row edge-row">
+                                <span class="metric-label">Real-Time Edge</span>
+                                <span class="metric-value edge-value" id="edge-value">+2.34%</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Signals Generated</span>
+                                <span class="metric-value mono" id="ticks-value">1,247,892</span>
+                            </div>
+                            <div class="metrics-adapters">
+                                <span class="adapter-chip active" id="adapter-alpaca">Finance</span>
+                                <span class="adapter-chip active" id="adapter-timescale">Sports</span>
+                                <span class="adapter-chip" id="adapter-chroma">Discord</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Live Ticker Demo -->
-            <div class="hero-card">
-                <div class="ticker-widget" id="ticker-widget">
-                    <div class="ticker-header">
-                        <div class="ticker-status">
-                            <span class="status-dot"></span>
-                            <span class="status-text">Live Model Output</span>
-                        </div>
-                        <div class="ticker-timestamp" id="ticker-timestamp">--:--:--</div>
-                    </div>
-
-                    <div class="ticker-main">
-                        <div class="ticker-regime" id="ticker-regime">
-                            <span class="regime-label">Market Regime</span>
-                            <span class="regime-value" id="regime-value" data-regime="bullish">BULLISH</span>
-                        </div>
-                        <div class="ticker-confidence">
-                            <div class="confidence-bar">
-                                <div class="confidence-fill" id="confidence-fill" style="width: 87%"></div>
+                <div class="example-card">
+                    <div class="ticker-widget" id="ticker-widget">
+                        <div class="ticker-header">
+                            <div class="ticker-status">
+                                <span class="status-dot"></span>
+                                <span class="status-text">Live Model Output</span>
                             </div>
-                            <span class="confidence-value" id="confidence-value">87%</span>
+                            <div class="ticker-timestamp" id="ticker-timestamp">--:--:--</div>
                         </div>
-                    </div>
 
-                    <div class="ticker-metrics">
-                        <div class="metric-item">
-                            <span class="metric-label">Volatility</span>
-                            <span class="metric-value" id="vol-value">0.42</span>
+                        <div class="ticker-main">
+                            <div class="ticker-regime" id="ticker-regime">
+                                <span class="regime-label">Market Regime</span>
+                                <span class="regime-value" id="regime-value" data-regime="bullish">BULLISH</span>
+                            </div>
+                            <div class="ticker-confidence">
+                                <div class="confidence-bar">
+                                    <div class="confidence-fill" id="confidence-fill" style="width: 87%"></div>
+                                </div>
+                                <span class="confidence-value" id="confidence-value">87%</span>
+                            </div>
                         </div>
-                        <div class="metric-item">
-                            <span class="metric-label">Momentum</span>
-                            <span class="metric-value" id="momentum-value">+1.24</span>
-                        </div>
-                        <div class="metric-item highlight">
-                            <span class="metric-label">Edge</span>
-                            <span class="metric-value edge" id="edge-value" data-positive="true">+2.34%</span>
-                        </div>
-                    </div>
 
-                    <div class="ticker-sparkline">
-                        <svg id="sparkline-svg" viewBox="0 0 200 40" preserveAspectRatio="none">
-                            <defs>
-                                <linearGradient id="sparkGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" style="stop-color:rgba(0, 212, 255, 0.3)" />
-                                    <stop offset="100%" style="stop-color:rgba(0, 212, 255, 0)" />
-                                </linearGradient>
-                            </defs>
-                            <path id="sparkline-area" class="sparkline-area" d="" />
-                            <path id="sparkline-line" class="sparkline-line" d="" />
-                            <circle id="sparkline-dot" class="sparkline-dot" cx="0" cy="0" r="3" />
-                        </svg>
-                    </div>
-
-                    <div class="ticker-footer">
-                        <div class="ticker-signals">
-                            <span class="signal-count" id="signal-count">1,247,892</span>
-                            <span class="signal-label">signals processed</span>
+                        <div class="ticker-metrics">
+                            <div class="metric-item">
+                                <span class="metric-label">Volatility</span>
+                                <span class="metric-value" id="vol-value">0.42</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Momentum</span>
+                                <span class="metric-value" id="momentum-value">+1.24</span>
+                            </div>
+                            <div class="metric-item highlight">
+                                <span class="metric-label">Edge</span>
+                                <span class="metric-value edge" id="edge-value" data-positive="true">+2.34%</span>
+                            </div>
                         </div>
-                        <div class="ticker-feeds">
-                            <span class="feed-dot active"></span>
-                            <span class="feed-dot active"></span>
-                            <span class="feed-dot active"></span>
-                            <span class="feed-dot"></span>
+
+                        <div class="ticker-sparkline">
+                            <svg id="sparkline-svg" viewBox="0 0 200 40" preserveAspectRatio="none">
+                                <defs>
+                                    <linearGradient id="sparkGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" style="stop-color:rgba(0, 212, 255, 0.3)" />
+                                        <stop offset="100%" style="stop-color:rgba(0, 212, 255, 0)" />
+                                    </linearGradient>
+                                </defs>
+                                <path id="sparkline-area" class="sparkline-area" d="" />
+                                <path id="sparkline-line" class="sparkline-line" d="" />
+                                <circle id="sparkline-dot" class="sparkline-dot" cx="0" cy="0" r="3" />
+                            </svg>
+                        </div>
+
+                        <div class="ticker-footer">
+                            <div class="ticker-signals">
+                                <span class="signal-count" id="signal-count">1,247,892</span>
+                                <span class="signal-label">signals processed</span>
+                            </div>
+                            <div class="ticker-feeds">
+                                <span class="feed-dot active"></span>
+                                <span class="feed-dot active"></span>
+                                <span class="feed-dot active"></span>
+                                <span class="feed-dot"></span>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -877,10 +877,7 @@ body {
     max-width: var(--container-max);
     margin: 0 auto;
     padding: 0 32px;
-    display: grid;
-    grid-template-columns: 1fr 420px;
-    gap: 80px;
-    align-items: center;
+    text-align: center;
 }
 
 .hero-content {
@@ -946,7 +943,9 @@ body {
     font-size: 1.25rem;
     color: var(--text-secondary);
     margin-bottom: 32px;
-    max-width: 540px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
     line-height: 1.7;
 }
 
@@ -955,6 +954,7 @@ body {
     flex-wrap: wrap;
     gap: 12px;
     margin-bottom: 40px;
+    justify-content: center;
 }
 
 .tag {
@@ -979,6 +979,7 @@ body {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 /* Premium Buttons */
@@ -2538,12 +2539,7 @@ body {
     }
 
     .hero-container {
-        grid-template-columns: 1fr;
-        gap: 60px;
-    }
-
-    .hero-card {
-        max-width: 420px;
+        padding: 0 24px;
     }
 
     .hero-title {
@@ -3499,7 +3495,46 @@ body {
     50% { opacity: 0.4; }
 }
 
-/* Hero card container */
+/* ============================================
+   LIVE EXAMPLES SECTION
+   ============================================ */
+.live-examples {
+    padding-top: 60px;
+}
+
+.live-examples-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.example-card {
+    animation: fadeInUp 0.8s var(--ease-out-expo) both;
+}
+
+.example-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.example-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.example-card .metrics-card,
+.example-card .ticker-widget {
+    height: 100%;
+}
+
+@media (max-width: 768px) {
+    .live-examples-grid {
+        grid-template-columns: 1fr;
+        max-width: 420px;
+    }
+}
+
+/* Hero card container (legacy) */
 .hero-card {
     animation: fadeInUp 1s var(--ease-out-expo) 0.5s both;
 }
