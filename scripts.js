@@ -1,5 +1,6 @@
 /* ============================================
-   KYZLO LABS - JavaScript
+   KYZLO LABS - Premium JavaScript
+   Institutional-Grade Interactions
    ============================================ */
 
 // ============================================
@@ -44,9 +45,9 @@ function initLiveTicker() {
     const adapterTimescale = document.getElementById('adapter-timescale');
     const adapterChroma = document.getElementById('adapter-chroma');
 
-    if (!tickerTime) return; // Exit if ticker elements don't exist
+    if (!tickerTime) return;
 
-    // Update time display every second
+    // Update time display
     function updateTime() {
         const now = new Date();
         const hours = String(now.getHours()).padStart(2, '0');
@@ -57,8 +58,9 @@ function initLiveTicker() {
 
     // Flash animation helper
     function flashElement(el) {
+        if (!el) return;
         el.classList.add('updating');
-        setTimeout(() => el.classList.remove('updating'), 300);
+        setTimeout(() => el.classList.remove('updating'), 400);
     }
 
     // Update ticker with next snapshot
@@ -66,45 +68,55 @@ function initLiveTicker() {
         const snapshot = snapshots[currentIndex];
 
         // Update regime
-        regimeValue.textContent = snapshot.regime;
-        regimeValue.className = 'metric-value ' + snapshot.regimeClass;
-        flashElement(regimeValue);
+        if (regimeValue) {
+            regimeValue.textContent = snapshot.regime;
+            regimeValue.className = 'metric-value ' + snapshot.regimeClass;
+            flashElement(regimeValue);
+        }
 
         // Update volatility
-        volatilityValue.textContent = snapshot.volatility.toFixed(2);
-        flashElement(volatilityValue);
+        if (volatilityValue) {
+            volatilityValue.textContent = snapshot.volatility.toFixed(2);
+            flashElement(volatilityValue);
+        }
 
         // Update confidence
-        confidenceValue.textContent = snapshot.confidence + '%';
-        flashElement(confidenceValue);
+        if (confidenceValue) {
+            confidenceValue.textContent = snapshot.confidence + '%';
+            flashElement(confidenceValue);
+        }
 
         // Update edge with color
-        const edgeStr = snapshot.edge >= 0
-            ? '+' + snapshot.edge.toFixed(2) + '%'
-            : snapshot.edge.toFixed(2) + '%';
-        edgeValue.textContent = edgeStr;
-        edgeValue.classList.remove('positive', 'negative');
-        edgeValue.classList.add(snapshot.edge >= 0 ? 'positive' : 'negative');
+        if (edgeValue) {
+            const edgeStr = snapshot.edge >= 0
+                ? '+' + snapshot.edge.toFixed(2) + '%'
+                : snapshot.edge.toFixed(2) + '%';
+            edgeValue.textContent = edgeStr;
+            edgeValue.classList.remove('positive', 'negative');
+            edgeValue.classList.add(snapshot.edge >= 0 ? 'positive' : 'negative');
 
-        // Flash effect on edge
-        edgeValue.classList.add('flash');
-        setTimeout(() => edgeValue.classList.remove('flash'), 150);
+            // Flash effect on edge
+            edgeValue.classList.add('flash');
+            setTimeout(() => edgeValue.classList.remove('flash'), 200);
+        }
 
         // Increment ticks
-        ticksBase += Math.floor(Math.random() * 500) + 100;
-        ticksValue.textContent = ticksBase.toLocaleString();
-        flashElement(ticksValue);
+        if (ticksValue) {
+            ticksBase += Math.floor(Math.random() * 800) + 200;
+            ticksValue.textContent = ticksBase.toLocaleString();
+            flashElement(ticksValue);
+        }
 
-        // Cycle adapter states for visual interest
+        // Cycle adapter states
         const adapters = [adapterAlpaca, adapterTimescale, adapterChroma];
-        adapters.forEach((adapter, i) => {
-            // Randomly toggle processing state
-            if (Math.random() > 0.7) {
+        adapters.forEach((adapter) => {
+            if (!adapter) return;
+            if (Math.random() > 0.6) {
                 adapter.classList.add('processing');
                 setTimeout(() => {
                     adapter.classList.remove('processing');
                     adapter.classList.add('active');
-                }, 400);
+                }, 500);
             }
         });
 
@@ -123,53 +135,72 @@ function initLiveTicker() {
     setInterval(updateTicker, 2500);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    // ============================================
-    // Dynamic Year in Footer
-    // ============================================
-    const yearElement = document.getElementById('year');
-    if (yearElement) {
-        yearElement.textContent = new Date().getFullYear();
-    }
+// ============================================
+// Scroll Reveal Animation
+// ============================================
+function initScrollReveal() {
+    const revealElements = document.querySelectorAll('.reveal');
+    const staggerContainers = document.querySelectorAll('.stagger-children');
 
-    // ============================================
-    // Smooth Scroll for Anchor Links
-    // ============================================
-    const anchorLinks = document.querySelectorAll('a[href^="#"]');
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -80px 0px',
+        threshold: 0.1
+    };
 
-    anchorLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-
-            // Skip if it's just "#"
-            if (href === '#') return;
-
-            const target = document.querySelector(href);
-
-            if (target) {
-                e.preventDefault();
-
-                // Close mobile nav if open
-                closeMobileNav();
-
-                // Calculate offset for fixed nav
-                const navHeight = document.querySelector('.nav').offsetHeight;
-                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
-
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target);
             }
         });
+    }, observerOptions);
+
+    revealElements.forEach(el => {
+        revealObserver.observe(el);
     });
 
-    // ============================================
-    // Mobile Navigation Toggle
-    // ============================================
+    staggerContainers.forEach(container => {
+        revealObserver.observe(container);
+    });
+}
+
+// ============================================
+// Navigation Scroll Behavior
+// ============================================
+function initNavigation() {
+    const nav = document.getElementById('nav');
     const navToggle = document.getElementById('nav-toggle');
     const navLinks = document.getElementById('nav-links');
 
+    if (!nav) return;
+
+    // Scroll state
+    let lastScroll = 0;
+    let ticking = false;
+
+    function updateNav() {
+        const currentScroll = window.pageYOffset;
+
+        if (currentScroll > 50) {
+            nav.classList.add('scrolled');
+        } else {
+            nav.classList.remove('scrolled');
+        }
+
+        lastScroll = currentScroll;
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            requestAnimationFrame(updateNav);
+            ticking = true;
+        }
+    });
+
+    // Mobile toggle
     function closeMobileNav() {
         if (navLinks && navToggle) {
             navLinks.classList.remove('active');
@@ -178,127 +209,204 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (navToggle && navLinks) {
-        navToggle.addEventListener('click', function() {
+        navToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
             navToggle.classList.toggle('active');
         });
 
-        // Close nav when clicking outside
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', (e) => {
             if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
                 closeMobileNav();
             }
         });
 
-        // Close nav on escape key
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeMobileNav();
             }
         });
     }
 
-    // ============================================
-    // Contact Form Handler
-    // ============================================
+    // Smooth scroll for anchor links
+    const anchorLinks = document.querySelectorAll('a[href^="#"]');
+
+    anchorLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href === '#') return;
+
+            const target = document.querySelector(href);
+            if (target) {
+                e.preventDefault();
+                closeMobileNav();
+
+                const navHeight = nav.offsetHeight;
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+// ============================================
+// Contact Form Handler
+// ============================================
+function initContactForm() {
     const contactForm = document.getElementById('contact-form');
 
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+    if (!contactForm) return;
 
-            // Get form values
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const message = document.getElementById('message').value.trim();
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
 
-            // Basic validation
-            if (!name || !email || !message) {
-                alert('Please fill in all fields.');
-                return;
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const message = document.getElementById('message').value.trim();
+
+        // Basic validation
+        if (!name || !email || !message) {
+            showNotification('Please fill in all fields.', 'error');
+            return;
+        }
+
+        // Email format validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showNotification('Please enter a valid email address.', 'error');
+            return;
+        }
+
+        // Show success message
+        showNotification('Message sent! We\'ll be in touch soon.', 'success');
+        contactForm.reset();
+    });
+}
+
+// ============================================
+// Notification System
+// ============================================
+function showNotification(message, type = 'info') {
+    // Remove existing notifications
+    const existing = document.querySelector('.notification');
+    if (existing) existing.remove();
+
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <span>${message}</span>
+        <button class="notification-close">&times;</button>
+    `;
+
+    // Add styles if not present
+    if (!document.getElementById('notification-styles')) {
+        const style = document.createElement('style');
+        style.id = 'notification-styles';
+        style.textContent = `
+            .notification {
+                position: fixed;
+                bottom: 32px;
+                right: 32px;
+                padding: 16px 24px;
+                background: rgba(16, 19, 36, 0.95);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                color: #f0f1f5;
+                font-size: 0.95rem;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                z-index: 10000;
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             }
-
-            // Email format validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                alert('Please enter a valid email address.');
-                return;
+            .notification-success { border-color: rgba(16, 185, 129, 0.4); }
+            .notification-error { border-color: rgba(239, 68, 68, 0.4); }
+            .notification-close {
+                background: none;
+                border: none;
+                color: #a0a3b5;
+                font-size: 1.4rem;
+                cursor: pointer;
+                padding: 0;
+                line-height: 1;
+                transition: color 0.2s ease;
             }
-
-            // In production, this would send the message to a backend
-            alert('In production, this would send your message to Kyzlo Labs.\n\nThank you for reaching out!');
-
-            // Reset form
-            contactForm.reset();
-        });
+            .notification-close:hover { color: #f0f1f5; }
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
     }
 
-    // ============================================
-    // Navigation Background on Scroll
-    // ============================================
-    const nav = document.getElementById('nav');
+    document.body.appendChild(notification);
 
-    if (nav) {
-        let lastScroll = 0;
-
-        window.addEventListener('scroll', function() {
-            const currentScroll = window.pageYOffset;
-
-            if (currentScroll > 100) {
-                nav.style.background = 'rgba(10, 11, 26, 0.95)';
-            } else {
-                nav.style.background = 'rgba(10, 11, 26, 0.85)';
-            }
-
-            lastScroll = currentScroll;
-        });
-    }
-
-    // ============================================
-    // Intersection Observer for Animations
-    // ============================================
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-
-    // Observe cards and sections for fade-in animation
-    const animateElements = document.querySelectorAll(
-        '.platform-card, .arch-layer, .sports-feature, .feature-card, .step'
-    );
-
-    animateElements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
+    // Close button
+    notification.querySelector('.notification-close').addEventListener('click', () => {
+        notification.style.animation = 'slideOut 0.3s ease forwards';
+        setTimeout(() => notification.remove(), 300);
     });
 
-    // ============================================
-    // Live Model Ticker
-    // ============================================
-    initLiveTicker();
+    // Auto dismiss
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.style.animation = 'slideOut 0.3s ease forwards';
+            setTimeout(() => notification.remove(), 300);
+        }
+    }, 5000);
+}
 
-    // ============================================
-    // Console Easter Egg
-    // ============================================
-    console.log('%c KYZLO LABS ',
-        'background: linear-gradient(135deg, #00d4ff, #d4a855); color: #0a0b1a; font-size: 24px; font-weight: bold; padding: 10px 20px; border-radius: 4px;'
+// ============================================
+// Dynamic Year
+// ============================================
+function initDynamicYear() {
+    const yearElement = document.getElementById('year');
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+    }
+}
+
+// ============================================
+// Console Branding
+// ============================================
+function initConsoleBranding() {
+    console.log(
+        '%c KYZLO LABS ',
+        'background: linear-gradient(135deg, #00d4ff, #c9a227); color: #050508; font-size: 28px; font-weight: bold; padding: 12px 24px; border-radius: 6px;'
     );
-    console.log('%cQuantitative Research Lab for Finance & Sports',
-        'color: #9a9cb5; font-size: 14px; padding: 5px 0;'
+    console.log(
+        '%cInstitutional-Grade Quantitative Research',
+        'color: #a0a3b5; font-size: 14px; padding: 8px 0;'
     );
-    console.log('%chttps://github.com/kitchen-sys',
-        'color: #00d4ff; font-size: 12px;'
+    console.log(
+        '%cFinance & Sports Analytics Platform',
+        'color: #5c5f73; font-size: 12px;'
     );
+    console.log(
+        '%chttps://github.com/kitchen-sys',
+        'color: #00d4ff; font-size: 12px; padding-top: 4px;'
+    );
+}
+
+// ============================================
+// Initialize All
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    initDynamicYear();
+    initNavigation();
+    initScrollReveal();
+    initLiveTicker();
+    initContactForm();
+    initConsoleBranding();
 });
