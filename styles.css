@@ -72,6 +72,7 @@ body {
 
 /* ============================================
    ANIMATED COSMIC BACKGROUND
+   Deep Space with Greek Influences
    ============================================ */
 .bg-grid {
     position: fixed;
@@ -79,7 +80,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -3;
+    z-index: -10;
     background:
         linear-gradient(180deg,
             var(--bg-void) 0%,
@@ -88,7 +89,7 @@ body {
             var(--bg-nebula) 100%);
 }
 
-/* Animated grid pattern */
+/* Animated grid pattern with Greek key influence */
 .bg-grid::before {
     content: '';
     position: absolute;
@@ -102,9 +103,15 @@ body {
     background-size: 60px 60px;
     mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 70%);
     -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 70%);
+    animation: gridPulse 8s ease-in-out infinite;
 }
 
-/* Nebula gradient overlays */
+@keyframes gridPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Nebula gradient overlays - animated */
 .bg-grid::after {
     content: '';
     position: absolute;
@@ -113,17 +120,236 @@ body {
     width: 100%;
     height: 100%;
     background:
-        radial-gradient(ellipse 80% 50% at 20% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse 60% 40% at 80% 30%, rgba(0, 212, 255, 0.06) 0%, transparent 50%),
-        radial-gradient(ellipse 70% 60% at 70% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
-        radial-gradient(ellipse 50% 30% at 30% 70%, rgba(201, 162, 39, 0.04) 0%, transparent 50%);
-    animation: nebulaShift 30s ease-in-out infinite alternate;
+        radial-gradient(ellipse 80% 50% at 20% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 80% 30%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 70% 60% at 70% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 30% at 30% 70%, rgba(201, 162, 39, 0.05) 0%, transparent 50%);
+    animation: nebulaShift 20s ease-in-out infinite alternate;
 }
 
 @keyframes nebulaShift {
-    0% { opacity: 1; }
-    50% { opacity: 0.8; }
-    100% { opacity: 1; }
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* ============================================
+   STAR FIELD - Twinkling Stars
+   ============================================ */
+.stars-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -9;
+    pointer-events: none;
+}
+
+.stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-repeat: repeat;
+}
+
+.stars-small {
+    background-image:
+        radial-gradient(1px 1px at 20px 30px, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(1px 1px at 40px 70px, rgba(255, 255, 255, 0.7), transparent),
+        radial-gradient(1px 1px at 50px 160px, rgba(255, 255, 255, 0.6), transparent),
+        radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.7), transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.6), transparent),
+        radial-gradient(1px 1px at 160px 120px, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(1px 1px at 200px 20px, rgba(255, 255, 255, 0.5), transparent),
+        radial-gradient(1px 1px at 220px 180px, rgba(255, 255, 255, 0.7), transparent),
+        radial-gradient(1px 1px at 280px 60px, rgba(255, 255, 255, 0.6), transparent),
+        radial-gradient(1px 1px at 320px 140px, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(1px 1px at 360px 100px, rgba(255, 255, 255, 0.5), transparent),
+        radial-gradient(1px 1px at 400px 50px, rgba(255, 255, 255, 0.7), transparent);
+    background-size: 400px 200px;
+    animation: twinkle 4s ease-in-out infinite;
+}
+
+.stars-medium {
+    background-image:
+        radial-gradient(1.5px 1.5px at 100px 150px, var(--accent-cyan), transparent),
+        radial-gradient(1.5px 1.5px at 200px 220px, rgba(255, 255, 255, 0.9), transparent),
+        radial-gradient(1.5px 1.5px at 300px 50px, var(--accent-gold), transparent),
+        radial-gradient(1.5px 1.5px at 400px 180px, rgba(255, 255, 255, 0.9), transparent),
+        radial-gradient(1.5px 1.5px at 500px 100px, var(--accent-cyan), transparent),
+        radial-gradient(1.5px 1.5px at 150px 30px, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(1.5px 1.5px at 350px 250px, var(--accent-gold), transparent),
+        radial-gradient(1.5px 1.5px at 450px 300px, rgba(255, 255, 255, 0.9), transparent);
+    background-size: 550px 350px;
+    animation: twinkle 6s ease-in-out infinite 1s;
+}
+
+.stars-large {
+    background-image:
+        radial-gradient(2px 2px at 150px 200px, var(--accent-gold), transparent),
+        radial-gradient(2.5px 2.5px at 400px 300px, var(--accent-cyan), transparent),
+        radial-gradient(2px 2px at 600px 100px, rgba(255, 255, 255, 1), transparent),
+        radial-gradient(2.5px 2.5px at 300px 400px, var(--accent-gold), transparent),
+        radial-gradient(2px 2px at 700px 250px, var(--accent-cyan), transparent);
+    background-size: 800px 500px;
+    animation: twinkleLarge 8s ease-in-out infinite 0.5s;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+@keyframes twinkleLarge {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* ============================================
+   NEBULA CLOUDS - Moving Gas Clouds
+   ============================================ */
+.nebula-clouds {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -8;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.nebula {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.15;
+}
+
+.nebula-1 {
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(99, 102, 241, 0.4) 0%, rgba(139, 92, 246, 0.2) 40%, transparent 70%);
+    top: 10%;
+    left: -10%;
+    animation: nebulaFloat1 40s ease-in-out infinite;
+}
+
+.nebula-2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(ellipse, rgba(0, 212, 255, 0.35) 0%, rgba(0, 100, 180, 0.15) 50%, transparent 70%);
+    top: 40%;
+    right: -15%;
+    animation: nebulaFloat2 45s ease-in-out infinite 5s;
+}
+
+.nebula-3 {
+    width: 450px;
+    height: 350px;
+    background: radial-gradient(ellipse, rgba(201, 162, 39, 0.3) 0%, rgba(180, 140, 30, 0.1) 50%, transparent 70%);
+    bottom: 5%;
+    left: 30%;
+    animation: nebulaFloat3 35s ease-in-out infinite 10s;
+}
+
+@keyframes nebulaFloat1 {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.15; }
+    25% { transform: translate(50px, 30px) scale(1.1); opacity: 0.2; }
+    50% { transform: translate(100px, -20px) scale(1); opacity: 0.12; }
+    75% { transform: translate(30px, -40px) scale(1.15); opacity: 0.18; }
+}
+
+@keyframes nebulaFloat2 {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.15; }
+    33% { transform: translate(-80px, 50px) scale(1.2); opacity: 0.2; }
+    66% { transform: translate(-40px, -30px) scale(0.9); opacity: 0.1; }
+}
+
+@keyframes nebulaFloat3 {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.15; }
+    50% { transform: translate(60px, -60px) scale(1.1); opacity: 0.22; }
+}
+
+/* ============================================
+   SHOOTING STARS
+   ============================================ */
+.shooting-stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -7;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.shooting-star {
+    position: absolute;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-cyan), transparent);
+    border-radius: 2px;
+    opacity: 0;
+    transform: rotate(-45deg);
+}
+
+.shooting-star:nth-child(1) {
+    top: 10%;
+    left: 20%;
+    animation: shootingStar 8s ease-in-out infinite;
+}
+
+.shooting-star:nth-child(2) {
+    top: 30%;
+    left: 60%;
+    width: 80px;
+    animation: shootingStar 12s ease-in-out infinite 3s;
+}
+
+.shooting-star:nth-child(3) {
+    top: 60%;
+    left: 40%;
+    width: 120px;
+    background: linear-gradient(90deg, var(--accent-gold), transparent);
+    animation: shootingStar 15s ease-in-out infinite 7s;
+}
+
+@keyframes shootingStar {
+    0% { opacity: 0; transform: rotate(-45deg) translateX(-200px); }
+    5% { opacity: 1; }
+    15% { opacity: 0; transform: rotate(-45deg) translateX(600px); }
+    100% { opacity: 0; transform: rotate(-45deg) translateX(600px); }
+}
+
+/* ============================================
+   COSMIC DUST - Floating Particles
+   ============================================ */
+.cosmic-dust {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -5;
+    pointer-events: none;
+    background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(201, 162, 39, 0.4), transparent),
+        radial-gradient(1px 1px at 30% 50%, rgba(0, 212, 255, 0.3), transparent),
+        radial-gradient(1px 1px at 50% 80%, rgba(255, 255, 255, 0.3), transparent),
+        radial-gradient(1px 1px at 70% 30%, rgba(139, 92, 246, 0.3), transparent),
+        radial-gradient(1px 1px at 90% 60%, rgba(201, 162, 39, 0.4), transparent);
+    background-size: 100% 100%;
+    animation: dustFloat 25s linear infinite;
+}
+
+@keyframes dustFloat {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(-100px) rotate(5deg); }
 }
 
 /* Floating particles */
@@ -133,19 +359,20 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -2;
+    z-index: -4;
     overflow: hidden;
     pointer-events: none;
 }
 
 .particle {
     position: absolute;
-    width: 2px;
-    height: 2px;
+    width: 3px;
+    height: 3px;
     background: var(--accent-cyan);
     border-radius: 50%;
     opacity: 0;
     animation: particleFloat 20s infinite;
+    box-shadow: 0 0 6px var(--accent-cyan);
 }
 
 .particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 25s; }
@@ -166,8 +393,9 @@ body {
 
 .particle:nth-child(even) {
     background: var(--accent-gold);
-    width: 1.5px;
-    height: 1.5px;
+    width: 2px;
+    height: 2px;
+    box-shadow: 0 0 8px var(--accent-gold);
 }
 
 @keyframes particleFloat {
@@ -176,10 +404,10 @@ body {
         opacity: 0;
     }
     10% {
-        opacity: 0.6;
+        opacity: 0.8;
     }
     90% {
-        opacity: 0.6;
+        opacity: 0.8;
     }
     100% {
         transform: translateY(-100vh) scale(1);
@@ -200,9 +428,59 @@ body {
         0deg,
         transparent,
         transparent 2px,
-        rgba(0, 0, 0, 0.03) 2px,
-        rgba(0, 0, 0, 0.03) 4px
+        rgba(0, 0, 0, 0.02) 2px,
+        rgba(0, 0, 0, 0.02) 4px
     );
+}
+
+/* ============================================
+   GREEK DECORATIVE ELEMENTS
+   Ancient Columns & Meander Patterns
+   ============================================ */
+.greek-columns {
+    position: fixed;
+    top: 0;
+    width: 60px;
+    height: 100%;
+    z-index: -3;
+    pointer-events: none;
+    opacity: 0.04;
+}
+
+.greek-columns.left {
+    left: 0;
+    background:
+        repeating-linear-gradient(
+            180deg,
+            transparent 0px,
+            transparent 50px,
+            rgba(201, 162, 39, 0.5) 50px,
+            rgba(201, 162, 39, 0.5) 52px,
+            transparent 52px,
+            transparent 100px
+        ),
+        linear-gradient(90deg,
+            rgba(201, 162, 39, 0.3) 0%,
+            rgba(201, 162, 39, 0.15) 30%,
+            transparent 100%);
+}
+
+.greek-columns.right {
+    right: 0;
+    background:
+        repeating-linear-gradient(
+            180deg,
+            transparent 0px,
+            transparent 50px,
+            rgba(201, 162, 39, 0.5) 50px,
+            rgba(201, 162, 39, 0.5) 52px,
+            transparent 52px,
+            transparent 100px
+        ),
+        linear-gradient(270deg,
+            rgba(201, 162, 39, 0.3) 0%,
+            rgba(201, 162, 39, 0.15) 30%,
+            transparent 100%);
 }
 
 /* Container */
@@ -838,13 +1116,39 @@ body {
 .section-eyebrow::before,
 .section-eyebrow::after {
     content: '';
-    width: 32px;
+    width: 40px;
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--accent-gold));
 }
 
 .section-eyebrow::after {
     background: linear-gradient(90deg, var(--accent-gold), transparent);
+}
+
+/* Greek Key Border Pattern for Sections */
+.section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 8px;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            var(--accent-gold) 0px,
+            var(--accent-gold) 8px,
+            transparent 8px,
+            transparent 12px,
+            var(--accent-gold) 12px,
+            var(--accent-gold) 16px,
+            transparent 16px,
+            transparent 24px
+        );
+    opacity: 0.15;
+    mask-image: linear-gradient(90deg, transparent, black 20%, black 80%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 20%, black 80%, transparent);
 }
 
 .section-title {
@@ -955,9 +1259,10 @@ body {
     opacity: 1;
 }
 
+/* Laurel Wreath Inspired Card Icons */
 .card-icon {
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
     margin-bottom: 28px;
     position: relative;
     display: flex;
@@ -965,33 +1270,63 @@ body {
     justify-content: center;
 }
 
+/* Laurel leaves - left side */
 .card-icon::before {
     content: '';
     position: absolute;
     width: 100%;
     height: 100%;
-    border: 2px solid var(--accent-gold);
+    border: 2px solid transparent;
+    border-left-color: var(--accent-gold);
+    border-top-color: var(--accent-gold);
     border-radius: 50%;
-    opacity: 0.4;
+    opacity: 0.5;
+    animation: laurelRotate 20s linear infinite;
 }
 
+/* Laurel leaves - right side */
 .card-icon::after {
     content: '';
     position: absolute;
-    width: 70%;
-    height: 70%;
-    border: 2px solid var(--accent-cyan);
+    width: 80%;
+    height: 80%;
+    border: 2px solid transparent;
+    border-right-color: var(--accent-gold);
+    border-bottom-color: var(--accent-gold);
     border-radius: 50%;
-    opacity: 0.6;
+    opacity: 0.5;
+    animation: laurelRotate 20s linear infinite reverse;
+}
+
+@keyframes laurelRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 .card-icon-inner {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold));
     border-radius: 50%;
     position: relative;
     z-index: 1;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+}
+
+/* Greek marble texture hint on cards */
+.platform-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(0, 212, 255, 0.04) 0%, transparent 50%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, transparent 50%, rgba(255, 255, 255, 0.01) 100%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
 }
 
 .platform-card h3 {
@@ -1349,22 +1684,35 @@ body {
     position: relative;
 }
 
+/* Greek Portrait Frame */
 .founder-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 80px;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+    width: 120px;
+    height: 4px;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            var(--accent-gold) 0px,
+            var(--accent-gold) 6px,
+            transparent 6px,
+            transparent 10px,
+            var(--accent-gold) 10px,
+            var(--accent-gold) 14px,
+            transparent 14px,
+            transparent 20px
+        );
+    opacity: 0.6;
 }
 
+/* Greek Laurel Avatar Frame */
 .founder-avatar {
-    width: 90px;
-    height: 90px;
+    width: 100px;
+    height: 100px;
     margin: 0 auto 24px;
-    border: 3px solid var(--accent-gold);
     border-radius: 50%;
     background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(201, 162, 39, 0.15));
     display: flex;
@@ -1373,7 +1721,35 @@ body {
     font-size: 1.6rem;
     font-weight: 700;
     color: var(--text-primary);
-    box-shadow: 0 0 30px rgba(201, 162, 39, 0.15);
+    position: relative;
+    box-shadow:
+        0 0 30px rgba(201, 162, 39, 0.2),
+        inset 0 0 20px rgba(201, 162, 39, 0.1);
+}
+
+/* Laurel wreath around avatar */
+.founder-avatar::before {
+    content: '';
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    border: 3px solid transparent;
+    border-left-color: var(--accent-gold);
+    border-top-color: var(--accent-gold);
+    border-radius: 50%;
+    animation: laurelRotate 15s linear infinite;
+}
+
+.founder-avatar::after {
+    content: '';
+    position: absolute;
+    width: 110%;
+    height: 110%;
+    border: 2px solid transparent;
+    border-right-color: var(--accent-gold);
+    border-bottom-color: var(--accent-gold);
+    border-radius: 50%;
+    animation: laurelRotate 15s linear infinite reverse;
 }
 
 .founder-card h3 {
@@ -1705,8 +2081,13 @@ body {
    ============================================ */
 @media print {
     .bg-grid,
+    .stars-container,
+    .nebula-clouds,
+    .shooting-stars,
+    .cosmic-dust,
     .particles,
     .scanlines,
+    .greek-columns,
     .nav {
         display: none;
     }
@@ -1719,4 +2100,33 @@ body {
     .section {
         padding: 40px 0;
     }
+
+    .section::before {
+        display: none;
+    }
+}
+
+/* ============================================
+   GREEK MEANDER DIVIDER
+   Horizontal rule with Greek key pattern
+   ============================================ */
+.greek-divider {
+    width: 100%;
+    height: 12px;
+    margin: 60px 0;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            var(--accent-gold) 0px,
+            var(--accent-gold) 10px,
+            transparent 10px,
+            transparent 15px,
+            var(--accent-gold) 15px,
+            var(--accent-gold) 20px,
+            transparent 20px,
+            transparent 30px
+        );
+    opacity: 0.1;
+    mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
 }
