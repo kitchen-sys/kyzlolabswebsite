@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Wallet, ArrowLeft, ExternalLink, CheckCircle2, AlertCircle } from "lucide-react";
@@ -45,36 +46,59 @@ const walletOptions: WalletOption[] = [
   },
 ];
 
+// Demo wallet addresses for each wallet type
+const demoAddresses: Record<string, string> = {
+  phantom: "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+  solflare: "9aE5Ld4PFLGmqrPUYRkWH8dMm7hcKBUTQFQo5E8Zf7nB",
+  backpack: "BPK4r3EfVSM5E9kLJGXCdNB5hZP9F8mDq3L7vXQ2uYnK",
+  ledger: "LGR8x2M1nGJvqWJzrP7FhQ4d5KmY3Cq9TbNs6yU4wXeR",
+};
+
 export default function WalletConnectPage() {
   const router = useRouter();
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>("idle");
   const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleConnectWallet = async (walletId: string) => {
     setSelectedWallet(walletId);
     setConnectionStatus("connecting");
+    setError(null);
 
-    // TODO: Implement actual wallet connection logic
-    // - Detect if wallet extension is installed
-    // - Request connection to the wallet
-    // - Get public key and sign authentication message
-    // - Verify signature on backend
-    // - Create or retrieve user account
-    // - Store session token
+    // Get demo address for this wallet type
+    const demoAddress = demoAddresses[walletId];
 
-    // Simulate wallet connection
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    // Simulate wallet connection delay (in production, this would be actual wallet interaction)
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    // Simulate successful connection with mock address
-    const mockAddress = "7xKX...8dY2";
-    setWalletAddress(mockAddress);
-    setConnectionStatus("connected");
+    try {
+      // Use NextAuth signIn with the wallet provider
+      const result = await signIn("wallet", {
+        walletAddress: demoAddress,
+        walletType: walletId,
+        redirect: false,
+      });
 
-    // Auto-redirect after successful connection
-    setTimeout(() => {
-      router.push("/dashboard/overview");
-    }, 1500);
+      if (result?.error) {
+        setConnectionStatus("error");
+        setError("Failed to authenticate wallet. Please try again.");
+        return;
+      }
+
+      // Success
+      setWalletAddress(`${demoAddress.slice(0, 4)}...${demoAddress.slice(-4)}`);
+      setConnectionStatus("connected");
+
+      // Redirect to dashboard after brief success message
+      setTimeout(() => {
+        router.push("/dashboard/overview");
+        router.refresh();
+      }, 1500);
+    } catch {
+      setConnectionStatus("error");
+      setError("An unexpected error occurred. Please try again.");
+    }
   };
 
   const getStatusIcon = () => {
@@ -97,7 +121,7 @@ export default function WalletConnectPage() {
       case "connected":
         return `Connected: ${walletAddress}`;
       case "error":
-        return "Connection failed. Please try again.";
+        return error || "Connection failed. Please try again.";
       default:
         return "Select a wallet to connect";
     }
@@ -127,6 +151,15 @@ export default function WalletConnectPage() {
           </div>
         ) : (
           <>
+            {connectionStatus === "error" && (
+              <div className="p-3 rounded-lg bg-red-400/10 border border-red-400/20">
+                <p className="text-sm text-red-400 flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4" />
+                  {error}
+                </p>
+              </div>
+            )}
+
             <div className="space-y-3">
               {walletOptions.map((wallet) => (
                 <button
@@ -172,6 +205,9 @@ export default function WalletConnectPage() {
                   Get Phantom
                   <ExternalLink className="w-3 h-3" />
                 </a>
+              </p>
+              <p className="text-xs text-muted-foreground text-center">
+                Demo mode: Click any wallet to connect with a demo address
               </p>
             </div>
           </>
