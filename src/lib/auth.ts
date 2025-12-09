@@ -3,6 +3,9 @@ import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
 
+// Fallback secret for development/demo - in production, always set NEXTAUTH_SECRET
+const AUTH_SECRET = process.env.NEXTAUTH_SECRET || "demo-secret-for-development-only-change-in-production";
+
 export type CurrentUser = {
   id: string;
   email: string;
@@ -36,7 +39,9 @@ declare module "@auth/core/jwt" {
 
 export const authConfig: NextAuthConfig = {
   providers: [
+    // Email/Password credentials
     Credentials({
+      id: "credentials",
       name: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
@@ -88,6 +93,32 @@ export const authConfig: NextAuthConfig = {
         }
       },
     }),
+    // Wallet-based authentication (for Phantom, etc.)
+    Credentials({
+      id: "wallet",
+      name: "wallet",
+      credentials: {
+        walletAddress: { label: "Wallet Address", type: "text" },
+        walletType: { label: "Wallet Type", type: "text" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.walletAddress) {
+          return null;
+        }
+
+        const walletAddress = credentials.walletAddress as string;
+        const walletType = (credentials.walletType as string) || "phantom";
+
+        // For demo purposes, accept any wallet address
+        // In production, you would verify a signed message here
+        return {
+          id: `wallet-${walletAddress.slice(0, 8)}`,
+          email: `${walletAddress.slice(0, 8)}...${walletAddress.slice(-4)}@wallet.local`,
+          name: `${walletType.charAt(0).toUpperCase() + walletType.slice(1)} Wallet`,
+          role: "user" as const,
+        };
+      },
+    }),
   ],
   callbacks: {
     async jwt({ token, user }) {
@@ -113,7 +144,8 @@ export const authConfig: NextAuthConfig = {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: AUTH_SECRET,
+  trustHost: true,
 };
 
 export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);
