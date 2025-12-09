@@ -1,0 +1,295 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Space × Ancient Greece Theme - Dark Mode */
+    --bg-top: #0a0a1a;
+    --bg-bottom: #1a0a2e;
+
+    /* Accent Colors */
+    --accent-neon: #00f5d4;
+    --accent-neon-rgb: 0, 245, 212;
+    --accent-gold: #d4af37;
+    --accent-gold-light: #f0d77c;
+
+    /* Card / Surface */
+    --card-bg: rgba(20, 20, 40, 0.8);
+    --card-border: rgba(212, 175, 55, 0.2);
+
+    /* Marble texture effect */
+    --marble-bg: rgba(245, 245, 250, 0.05);
+    --marble-light: rgba(255, 255, 255, 0.08);
+    --marble-texture: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.03) 0%,
+      rgba(255, 255, 255, 0.08) 25%,
+      rgba(255, 255, 255, 0.03) 50%,
+      rgba(255, 255, 255, 0.06) 75%,
+      rgba(255, 255, 255, 0.03) 100%
+    );
+
+    /* shadcn/ui CSS Variables */
+    --background: 240 10% 6%;
+    --foreground: 0 0% 95%;
+
+    --card: 240 10% 8%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 240 10% 8%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 174 100% 48%;
+    --primary-foreground: 240 10% 6%;
+
+    --secondary: 43 74% 52%;
+    --secondary-foreground: 240 10% 6%;
+
+    --muted: 240 5% 18%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 174 100% 48%;
+    --accent-foreground: 240 10% 6%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5% 20%;
+    --input: 240 5% 20%;
+    --ring: 174 100% 48%;
+
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  /* Galaxy Background with Starfield */
+  .bg-galaxy {
+    background: linear-gradient(to bottom, var(--bg-top), var(--bg-bottom));
+    position: relative;
+  }
+
+  /* CSS-only Starfield Effect */
+  .starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .starfield::before,
+  .starfield::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image:
+      radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.8), transparent),
+      radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.6), transparent),
+      radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.7), transparent),
+      radial-gradient(2px 2px at 130px 80px, rgba(0, 245, 212, 0.5), transparent),
+      radial-gradient(1px 1px at 160px 120px, rgba(255, 255, 255, 0.6), transparent),
+      radial-gradient(2px 2px at 200px 50px, rgba(212, 175, 55, 0.4), transparent),
+      radial-gradient(1px 1px at 250px 160px, rgba(255, 255, 255, 0.8), transparent),
+      radial-gradient(2px 2px at 300px 90px, rgba(255, 255, 255, 0.5), transparent),
+      radial-gradient(1px 1px at 350px 200px, rgba(0, 245, 212, 0.4), transparent),
+      radial-gradient(2px 2px at 400px 140px, rgba(255, 255, 255, 0.6), transparent);
+    background-repeat: repeat;
+    background-size: 500px 500px;
+    animation: star-drift 100s linear infinite;
+  }
+
+  .starfield::after {
+    background-image:
+      radial-gradient(1px 1px at 50px 100px, rgba(255, 255, 255, 0.5), transparent),
+      radial-gradient(2px 2px at 100px 200px, rgba(0, 245, 212, 0.3), transparent),
+      radial-gradient(1px 1px at 150px 50px, rgba(255, 255, 255, 0.7), transparent),
+      radial-gradient(1px 1px at 220px 180px, rgba(212, 175, 55, 0.3), transparent),
+      radial-gradient(2px 2px at 280px 100px, rgba(255, 255, 255, 0.4), transparent),
+      radial-gradient(1px 1px at 320px 250px, rgba(255, 255, 255, 0.6), transparent),
+      radial-gradient(2px 2px at 380px 150px, rgba(0, 245, 212, 0.3), transparent),
+      radial-gradient(1px 1px at 420px 80px, rgba(255, 255, 255, 0.5), transparent);
+    background-size: 450px 450px;
+    animation: star-drift 80s linear infinite reverse;
+    opacity: 0.7;
+  }
+
+  @keyframes star-drift {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-500px);
+    }
+  }
+
+  /* Marble Card Effect */
+  .card-marble {
+    background: var(--card-bg);
+    background-image: var(--marble-texture);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(10px);
+  }
+
+  /* Greek Key Border Pattern */
+  .greek-border {
+    position: relative;
+  }
+
+  .greek-border::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--accent-gold) 0px,
+      var(--accent-gold) 8px,
+      transparent 8px,
+      transparent 12px,
+      var(--accent-gold) 12px,
+      var(--accent-gold) 16px,
+      transparent 16px,
+      transparent 24px
+    );
+    opacity: 0.6;
+  }
+
+  /* Laurel Decorative Element */
+  .laurel-accent {
+    position: relative;
+  }
+
+  .laurel-accent::before,
+  .laurel-accent::after {
+    content: "🌿";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    opacity: 0.4;
+  }
+
+  .laurel-accent::before {
+    left: -1.5rem;
+    transform: translateY(-50%) scaleX(-1);
+  }
+
+  .laurel-accent::after {
+    right: -1.5rem;
+  }
+
+  /* Neon Glow Effects */
+  .neon-glow {
+    box-shadow: 0 0 10px rgba(var(--accent-neon-rgb), 0.3),
+                0 0 20px rgba(var(--accent-neon-rgb), 0.2),
+                0 0 30px rgba(var(--accent-neon-rgb), 0.1);
+  }
+
+  .neon-text {
+    color: var(--accent-neon);
+    text-shadow: 0 0 10px rgba(var(--accent-neon-rgb), 0.5),
+                 0 0 20px rgba(var(--accent-neon-rgb), 0.3);
+  }
+
+  .gold-text {
+    color: var(--accent-gold);
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+  }
+
+  /* Gold Gradient Text */
+  .text-gradient-gold {
+    background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 50%, var(--accent-gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Neon Gradient Text */
+  .text-gradient-neon {
+    background: linear-gradient(135deg, var(--accent-neon) 0%, #00d4aa 50%, var(--accent-neon) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glass Effect */
+  .glass {
+    background: rgba(20, 20, 40, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Animated Border Gradient */
+  .border-gradient {
+    position: relative;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+  }
+
+  .border-gradient::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: calc(var(--radius) + 1px);
+    background: linear-gradient(135deg, var(--accent-neon), var(--accent-gold), var(--accent-neon));
+    z-index: -1;
+    opacity: 0.5;
+  }
+
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg-top);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(var(--accent-neon-rgb), 0.3);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--accent-neon-rgb), 0.5);
+  }
+}
+
+@layer utilities {
+  /* Utility for truncating text */
+  .truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Focus ring for accessibility */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background;
+  }
+}
