@@ -22,9 +22,9 @@ interface EnvConfig {
   NEXT_PUBLIC_APP_URL: string;
   NEXT_PUBLIC_API_URL: string;
 
-  // Authentication
-  JWT_SECRET: string;
-  JWT_EXPIRES_IN: string;
+  // NextAuth Configuration
+  NEXTAUTH_URL: string;
+  NEXTAUTH_SECRET: string;
 
   // Database
   DATABASE_URL: string;
@@ -105,9 +105,9 @@ export const env: EnvConfig = {
   NEXT_PUBLIC_APP_URL: getEnvVar("NEXT_PUBLIC_APP_URL", "http://localhost:3000"),
   NEXT_PUBLIC_API_URL: getEnvVar("NEXT_PUBLIC_API_URL", "/api"),
 
-  // Authentication
-  JWT_SECRET: getEnvVar("JWT_SECRET", "development-secret-change-in-production"),
-  JWT_EXPIRES_IN: getEnvVar("JWT_EXPIRES_IN", "7d"),
+  // NextAuth Configuration
+  NEXTAUTH_URL: getEnvVar("NEXTAUTH_URL", "http://localhost:3000"),
+  NEXTAUTH_SECRET: getEnvVar("NEXTAUTH_SECRET", "development-secret-change-in-production"),
 
   // Database
   DATABASE_URL: getEnvVar("DATABASE_URL", "postgresql://localhost:5432/kyzlo"),

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -15,11 +16,32 @@ import { Bell, Search, Settings, LogOut, User, HelpCircle, Wallet } from "lucide
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
-interface TopbarProps {
-  className?: string;
+interface TopbarUser {
+  id: string;
+  email: string;
+  name: string | null;
+  role: "user" | "admin";
 }
 
-export function Topbar({ className }: TopbarProps) {
+interface TopbarProps {
+  className?: string;
+  user?: TopbarUser;
+}
+
+export function Topbar({ className, user }: TopbarProps) {
+  const initials = user?.name
+    ? user.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    : user?.email?.slice(0, 2).toUpperCase() || "U";
+
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: "/auth/login" });
+  };
+
   return (
     <header className={`h-16 border-b border-border bg-card/50 flex items-center justify-between px-6 ${className}`}>
       {/* Search */}
@@ -94,7 +116,7 @@ export function Topbar({ className }: TopbarProps) {
               <Avatar className="h-8 w-8 border-2 border-[var(--accent-gold)]/30">
                 <AvatarImage src="/avatar.png" alt="User" />
                 <AvatarFallback className="bg-[var(--accent-gold)]/10 text-[var(--accent-gold)]">
-                  MA
+                  {initials}
                 </AvatarFallback>
               </Avatar>
             </Button>
@@ -102,8 +124,8 @@ export function Topbar({ className }: TopbarProps) {
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium">Marcus Aurelius</p>
-                <p className="text-xs text-muted-foreground">trader@kyzlo.io</p>
+                <p className="text-sm font-medium">{user?.name || "User"}</p>
+                <p className="text-xs text-muted-foreground">{user?.email}</p>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
@@ -122,12 +144,13 @@ export function Topbar({ className }: TopbarProps) {
               </DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator />
-            <Link href="/auth/login">
-              <DropdownMenuItem className="text-destructive focus:text-destructive">
-                <LogOut className="mr-2 h-4 w-4" />
-                Log out
-              </DropdownMenuItem>
-            </Link>
+            <DropdownMenuItem
+              onClick={handleSignOut}
+              className="text-destructive focus:text-destructive cursor-pointer"
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              Log out
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

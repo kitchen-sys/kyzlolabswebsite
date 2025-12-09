@@ -27,7 +27,7 @@ interface UsePricesReturn {
   getPrice: (symbol: string) => PriceData | null;
 }
 
-// Mock price data generator
+// Mock price data generator - will be replaced with real API later
 const generateMockPrice = (symbol: string, basePrice: number, volatility: number): PriceData => {
   const change = (Math.random() - 0.5) * volatility * basePrice;
   const price = basePrice + change;
@@ -53,6 +53,7 @@ const basePrices: Record<string, { name: string; price: number; volatility: numb
   JUP: { name: "Jupiter", price: 1.15, volatility: 0.08 },
   RAY: { name: "Raydium", price: 4.82, volatility: 0.07 },
   BONK: { name: "Bonk", price: 0.00003, volatility: 0.15 },
+  USDC: { name: "USD Coin", price: 1.0, volatility: 0.001 },
   GLD: { name: "Gold ETF", price: 2024, volatility: 0.01 },
   USO: { name: "Oil ETF", price: 78, volatility: 0.03 },
   AAPL: { name: "Apple Inc.", price: 188.5, volatility: 0.02 },
@@ -63,13 +64,7 @@ const basePrices: Record<string, { name: string; price: number; volatility: numb
 
 /**
  * Hook to fetch and subscribe to price data
- *
- * TODO: Implement real price feeds
- * - Connect to exchange WebSockets for real-time prices
- * - Use CoinGecko/CoinMarketCap API for crypto prices
- * - Use Alpaca API for stock prices
- * - Implement price caching and batching
- * - Handle reconnection on WebSocket disconnect
+ * TODO: Replace with real price API (CoinGecko, Binance, etc.)
  */
 export function usePrices(options?: UsePricesOptions): UsePricesReturn {
   const [prices, setPrices] = useState<Record<string, PriceData>>({});
@@ -81,12 +76,12 @@ export function usePrices(options?: UsePricesOptions): UsePricesReturn {
 
   const fetchPrices = useCallback(async () => {
     try {
-      // TODO: Call actual price API
+      // TODO: Replace with real API call
       // const response = await fetch(`/api/prices?symbols=${symbols.join(',')}`);
       // const data = await response.json();
 
       // Simulate API call with mock data
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const newPrices: Record<string, PriceData> = {};
       symbols.forEach((symbol) => {
