@@ -1,272 +1,150 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/auth";
 
-// Mock wallet data
-const mockWalletData = {
-  totalValue: 185537.39,
-  change24h: 2.4,
-  connectedAccounts: [
-    {
-      id: "acc_1",
-      type: "exchange",
-      name: "Binance",
-      status: "connected",
-      lastSync: "2024-12-09T12:00:00Z",
-    },
-    {
-      id: "acc_2",
-      type: "exchange",
-      name: "Alpaca",
-      status: "connected",
-      lastSync: "2024-12-09T12:00:00Z",
-    },
-    {
-      id: "acc_3",
-      type: "wallet",
-      name: "Phantom",
-      address: "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
-      chain: "solana",
-      status: "connected",
-      lastSync: "2024-12-09T12:30:00Z",
-    },
-    {
-      id: "acc_4",
-      type: "wallet",
-      name: "MetaMask",
-      address: "0x742d35Cc6634C0532925a3b844Bc9e7595f8dE2b",
-      chain: "ethereum",
-      status: "connected",
-      lastSync: "2024-12-09T12:30:00Z",
-    },
-  ],
-  balances: [
-    {
-      asset: "Solana",
-      symbol: "SOL",
-      chain: "Solana",
-      balance: 125.45,
-      value: 24505.89,
-      change24h: 3.2,
-      source: "phantom",
-    },
-    {
-      asset: "USD Coin",
-      symbol: "USDC",
-      chain: "Solana",
-      balance: 15420.0,
-      value: 15420.0,
-      change24h: 0.0,
-      source: "phantom",
-    },
-    {
-      asset: "Bitcoin",
-      symbol: "BTC",
-      chain: "Binance",
-      balance: 0.85,
-      value: 82892.5,
-      change24h: 1.8,
-      source: "binance",
-    },
-    {
-      asset: "Ethereum",
-      symbol: "ETH",
-      chain: "Ethereum",
-      balance: 4.2,
-      value: 15750.0,
-      change24h: -0.5,
-      source: "metamask",
-    },
-    {
-      asset: "Jupiter",
-      symbol: "JUP",
-      chain: "Solana",
-      balance: 2500.0,
-      value: 2875.0,
-      change24h: 5.4,
-      source: "phantom",
-    },
-    {
-      asset: "Apple Inc.",
-      symbol: "AAPL",
-      chain: "Alpaca",
-      balance: 50,
-      value: 9425.0,
-      change24h: 0.8,
-      source: "alpaca",
-    },
-    {
-      asset: "NVIDIA Corp.",
-      symbol: "NVDA",
-      chain: "Alpaca",
-      balance: 25,
-      value: 32500.0,
-      change24h: 2.3,
-      source: "alpaca",
-    },
-  ],
-  recentTransactions: [
-    {
-      id: "tx_1",
-      type: "deposit",
-      asset: "USDC",
-      amount: 5000.0,
-      status: "completed",
-      timestamp: "2024-12-09T10:00:00Z",
-    },
-    {
-      id: "tx_2",
-      type: "swap",
-      fromAsset: "SOL",
-      toAsset: "USDC",
-      fromAmount: 10.5,
-      toAmount: 2051.12,
-      status: "completed",
-      timestamp: "2024-12-09T12:34:56Z",
-    },
-    {
-      id: "tx_3",
-      type: "trade",
-      asset: "BTC",
-      amount: 0.025,
-      side: "buy",
-      status: "completed",
-      timestamp: "2024-12-09T12:34:56Z",
-    },
-  ],
-};
-
-/**
- * GET /api/wallet
- * Returns wallet summary and balances
- *
- * TODO: Implement actual wallet data retrieval
- * - Authenticate user
- * - Fetch balances from connected exchanges via API
- * - Fetch on-chain balances from RPC nodes
- * - Calculate total value in USD
- * - Cache results with TTL
- */
-export async function GET(request: NextRequest) {
-  // TODO: Authenticate request
-  const searchParams = request.nextUrl.searchParams;
-  const source = searchParams.get("source"); // Filter by source (binance, phantom, etc.)
-  const chain = searchParams.get("chain"); // Filter by chain
-
-  let balances = [...mockWalletData.balances];
-
-  if (source) {
-    balances = balances.filter((b) => b.source === source);
-  }
-
-  if (chain) {
-    balances = balances.filter((b) => b.chain.toLowerCase() === chain.toLowerCase());
-  }
-
-  // Recalculate total if filtered
-  const totalValue = balances.reduce((sum, b) => sum + b.value, 0);
-
-  return NextResponse.json({
-    summary: {
-      totalValue,
-      change24h: mockWalletData.change24h,
-      lastUpdated: new Date().toISOString(),
-    },
-    connectedAccounts: mockWalletData.connectedAccounts,
-    balances,
-    recentTransactions: mockWalletData.recentTransactions,
-  });
-}
-
-/**
- * POST /api/wallet
- * Connect a new wallet or exchange
- *
- * TODO: Implement wallet/exchange connection
- * - For exchanges: validate and store API keys (encrypted)
- * - For wallets: store public address and verify ownership via signature
- * - Initialize balance sync
- */
-export async function POST(request: NextRequest) {
+// GET /api/wallet - Get all wallets and balances for current user
+export async function GET() {
   try {
-    const body = await request.json();
-    const { type, name, address, apiKey, apiSecret, chain } = body;
+    const currentUser = await getCurrentUser();
 
-    // TODO: Validate input based on type
-    // TODO: For exchanges: encrypt and store API keys
-    // TODO: For wallets: verify ownership via signature
-    // TODO: Initialize balance sync
-
-    if (type === "exchange") {
-      // TODO: Validate API keys with exchange
-      return NextResponse.json({
-        success: true,
-        account: {
-          id: "acc_" + Date.now(),
-          type: "exchange",
-          name,
-          status: "connected",
-          lastSync: new Date().toISOString(),
-        },
-        message: `${name} connected successfully`,
-      });
+    if (!currentUser) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    if (type === "wallet") {
-      // TODO: Verify wallet ownership via signature
-      return NextResponse.json({
-        success: true,
-        account: {
-          id: "acc_" + Date.now(),
-          type: "wallet",
-          name,
-          address,
-          chain,
-          status: "connected",
-          lastSync: new Date().toISOString(),
+    const wallets = await prisma.wallet.findMany({
+      where: { userId: currentUser.id },
+      include: {
+        balances: {
+          orderBy: { valueUsd: "desc" },
         },
-        message: `${name} wallet connected successfully`,
-      });
-    }
+      },
+      orderBy: { createdAt: "desc" },
+    });
 
-    return NextResponse.json(
-      { error: "Invalid account type" },
-      { status: 400 }
+    // Calculate totals
+    const totalValueUsd = wallets.reduce(
+      (sum, wallet) =>
+        sum + wallet.balances.reduce((balSum, bal) => balSum + bal.valueUsd, 0),
+      0
     );
-  } catch (error) {
-    console.error("Connect wallet error:", error);
-    return NextResponse.json(
-      { error: "Failed to connect account" },
-      { status: 500 }
-    );
-  }
-}
-
-/**
- * DELETE /api/wallet
- * Disconnect a wallet or exchange
- *
- * TODO: Implement disconnection
- * - Stop any bots using this account
- * - Delete stored credentials
- * - Clear cached balances
- */
-export async function DELETE(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { accountId } = body;
-
-    // TODO: Verify account ownership
-    // TODO: Check for active bots using this account
-    // TODO: Delete credentials and cached data
 
     return NextResponse.json({
-      success: true,
-      message: "Account disconnected successfully",
+      wallets: wallets.map((wallet) => ({
+        id: wallet.id,
+        chain: wallet.chain,
+        address: wallet.address,
+        label: wallet.label,
+        createdAt: wallet.createdAt,
+        balances: wallet.balances.map((balance) => ({
+          id: balance.id,
+          asset: balance.asset,
+          amount: balance.amount,
+          valueUsd: balance.valueUsd,
+          updatedAt: balance.updatedAt,
+        })),
+        totalValueUsd: wallet.balances.reduce((sum, bal) => sum + bal.valueUsd, 0),
+      })),
+      summary: {
+        totalWallets: wallets.length,
+        totalValueUsd,
+        chains: Array.from(new Set(wallets.map((w) => w.chain))),
+      },
     });
   } catch (error) {
-    console.error("Disconnect wallet error:", error);
-    return NextResponse.json(
-      { error: "Failed to disconnect account" },
-      { status: 500 }
-    );
+    console.error("Error fetching wallets:", error);
+    return NextResponse.json({ error: "Failed to fetch wallets" }, { status: 500 });
+  }
+}
+
+// POST /api/wallet - Add a new wallet
+export async function POST(request: Request) {
+  try {
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const { chain, address, label } = body;
+
+    if (!chain || !address) {
+      return NextResponse.json(
+        { error: "Chain and address are required" },
+        { status: 400 }
+      );
+    }
+
+    // Check if wallet already exists for this user
+    const existingWallet = await prisma.wallet.findFirst({
+      where: {
+        userId: currentUser.id,
+        address,
+        chain,
+      },
+    });
+
+    if (existingWallet) {
+      return NextResponse.json(
+        { error: "Wallet already connected" },
+        { status: 409 }
+      );
+    }
+
+    const wallet = await prisma.wallet.create({
+      data: {
+        userId: currentUser.id,
+        chain,
+        address,
+        label: label || null,
+      },
+      include: {
+        balances: true,
+      },
+    });
+
+    return NextResponse.json(wallet, { status: 201 });
+  } catch (error) {
+    console.error("Error creating wallet:", error);
+    return NextResponse.json({ error: "Failed to create wallet" }, { status: 500 });
+  }
+}
+
+// DELETE /api/wallet - Remove a wallet
+export async function DELETE(request: Request) {
+  try {
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const walletId = searchParams.get("id");
+
+    if (!walletId) {
+      return NextResponse.json({ error: "Wallet ID is required" }, { status: 400 });
+    }
+
+    // Verify ownership
+    const wallet = await prisma.wallet.findFirst({
+      where: {
+        id: walletId,
+        userId: currentUser.id,
+      },
+    });
+
+    if (!wallet) {
+      return NextResponse.json({ error: "Wallet not found" }, { status: 404 });
+    }
+
+    await prisma.wallet.delete({
+      where: { id: walletId },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Error deleting wallet:", error);
+    return NextResponse.json({ error: "Failed to delete wallet" }, { status: 500 });
   }
 }

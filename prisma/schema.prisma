@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  role         String   @default("user") // "user" | "admin"
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  bots    Bot[]
+  trades  Trade[]
+  wallets Wallet[]
+}
+
+model Bot {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  name      String
+  type      String   // "crypto" | "stock" | "commodity"
+  market    String   // "BTC-USDT", "AAPL", etc.
+  status    String   @default("inactive") // "active" | "paused" | "inactive" | "error"
+  strategy  String   @default("custom")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  trades Trade[]
+
+  @@index([userId])
+}
+
+model Trade {
+  id         String   @id @default(cuid())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  bot        Bot?     @relation(fields: [botId], references: [id], onDelete: SetNull)
+  botId      String?
+  symbol     String
+  side       String   // "buy" | "sell"
+  quantity   Float
+  price      Float
+  executedAt DateTime @default(now())
+  venue      String   // "binance", "alpaca", "mock", etc.
+  pnl        Float?
+
+  @@index([userId])
+  @@index([botId])
+}
+
+model Wallet {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  chain     String   // "solana" | "ethereum" | "mock"
+  address   String
+  label     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  balances WalletBalance[]
+
+  @@index([userId])
+}
+
+model WalletBalance {
+  id        String   @id @default(cuid())
+  wallet    Wallet   @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  walletId  String
+  asset     String   // "BTC", "ETH", "SOL", "USDC", etc.
+  amount    Float
+  valueUsd  Float
+  updatedAt DateTime @default(now())
+
+  @@index([walletId])
+}

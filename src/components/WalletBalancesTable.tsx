@@ -20,7 +20,7 @@ export interface WalletBalance {
   balance: number;
   value: number;
   change24h: number;
-  icon: string;
+  icon?: string;
 }
 
 interface WalletBalancesTableProps {
@@ -55,7 +55,7 @@ export function WalletBalancesTable({ balances, className }: WalletBalancesTable
               <TableCell>
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-lg">
-                    {balance.icon}
+                    {balance.icon || balance.symbol.charAt(0)}
                   </div>
                   <div>
                     <p className="font-medium">{balance.asset}</p>

@@ -5,6 +5,9 @@ import { StatCard } from "@/components/StatCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useUser } from "@/hooks/useUser";
+import { useBots } from "@/hooks/useBots";
+import { useWallet } from "@/hooks/useWallet";
 import {
   DollarSign,
   Bot,
@@ -15,74 +18,41 @@ import {
   Activity,
   Link2,
   ExternalLink,
+  Loader2,
 } from "lucide-react";
-
-// Mock data for overview
-const stats = {
-  totalValue: 127432.56,
-  totalPnl: 12543.21,
-  pnlPercent: 10.92,
-  activeBots: 7,
-  connectedExchanges: 3,
-  totalTrades: 1247,
-};
-
-const connectedExchanges = [
-  { name: "Binance", status: "connected", balance: "$45,230.12" },
-  { name: "Alpaca", status: "connected", balance: "$62,102.44" },
-  { name: "Solana (Phantom)", status: "connected", balance: "$20,100.00" },
-];
-
-const recentActivity = [
-  {
-    type: "trade",
-    description: "BTC Grid Bot executed buy",
-    amount: "+0.025 BTC",
-    time: "2 min ago",
-    positive: true,
-  },
-  {
-    type: "trade",
-    description: "ETH DCA Bot purchased",
-    amount: "+0.5 ETH",
-    time: "15 min ago",
-    positive: true,
-  },
-  {
-    type: "alert",
-    description: "SOL price alert triggered",
-    amount: "$195.32",
-    time: "1 hr ago",
-    positive: false,
-  },
-  {
-    type: "trade",
-    description: "AAPL momentum bot sold",
-    amount: "-10 shares",
-    time: "2 hr ago",
-    positive: false,
-  },
-  {
-    type: "deposit",
-    description: "USDC deposit confirmed",
-    amount: "+$5,000.00",
-    time: "3 hr ago",
-    positive: true,
-  },
-];
-
-const topPerformers = [
-  { name: "BTC Grid Pro", pnl: "+$4,521.30", percent: "+15.2%" },
-  { name: "SOL DCA Strategy", pnl: "+$2,103.45", percent: "+12.8%" },
-  { name: "ETH Momentum", pnl: "+$1,892.11", percent: "+9.4%" },
-];
+import Link from "next/link";
 
 export default function OverviewPage() {
+  const { user, isLoading: userLoading } = useUser();
+  const { bots, isLoading: botsLoading } = useBots();
+  const { wallets, summary, isLoading: walletLoading } = useWallet();
+
+  const isLoading = userLoading || botsLoading || walletLoading;
+
+  // Calculate stats from real data
+  const activeBots = bots.filter((b) => b.status === "active").length;
+  const totalPnl = bots.reduce((sum, b) => sum + b.pnl, 0);
+  const totalTrades = bots.reduce((sum, b) => sum + b.tradesCount, 0);
+  const totalValue = summary?.totalValueUsd || 0;
+
+  // Get top performers
+  const topPerformers = [...bots]
+    .sort((a, b) => b.pnl - a.pnl)
+    .slice(0, 3);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <SectionHeader
         title="Dashboard Overview"
-        description="Your portfolio performance at a glance"
+        description={`Welcome back, ${user?.name || user?.email || "Trader"}`}
       >
         <Button variant="outline" className="gap-2">
           <ExternalLink className="w-4 h-4" />
@@ -94,65 +64,73 @@ export default function OverviewPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           title="Total Account Value"
-          value={`$${stats.totalValue.toLocaleString()}`}
+          value={`$${totalValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
           icon={DollarSign}
-          trend={{ value: stats.pnlPercent, isPositive: true }}
+          trend={totalValue > 0 ? { value: 2.4, isPositive: true } : undefined}
           description="Across all connected accounts"
         />
         <StatCard
-          title="Total P&L (30d)"
-          value={`$${stats.totalPnl.toLocaleString()}`}
+          title="Total P&L"
+          value={`${totalPnl >= 0 ? "+" : ""}$${totalPnl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
           icon={TrendingUp}
-          trend={{ value: stats.pnlPercent, isPositive: true }}
-          description="Net profit this month"
+          trend={totalPnl !== 0 ? { value: Math.abs(totalPnl / 100), isPositive: totalPnl >= 0 } : undefined}
+          description="Net profit from bots"
         />
         <StatCard
           title="Active Bots"
-          value={stats.activeBots}
+          value={activeBots}
           icon={Bot}
-          description="Executing strategies 24/7"
+          description={`${bots.length} total bots`}
         />
         <StatCard
           title="Total Trades"
-          value={stats.totalTrades.toLocaleString()}
+          value={totalTrades.toLocaleString()}
           icon={Activity}
-          description="Executed this month"
+          description="Executed by bots"
         />
       </div>
 
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Connected Exchanges */}
+        {/* Connected Wallets */}
         <Card className="lg:col-span-1">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
               <Link2 className="w-5 h-5 text-[var(--accent-neon)]" />
-              Connected Exchanges
+              Connected Wallets
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {connectedExchanges.map((exchange) => (
-              <div
-                key={exchange.name}
-                className="flex items-center justify-between p-3 rounded-lg bg-muted/50"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[var(--accent-gold)]/10 flex items-center justify-center">
-                    <Wallet className="w-4 h-4 text-[var(--accent-gold)]" />
+            {wallets.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No wallets connected yet.</p>
+            ) : (
+              wallets.map((wallet) => (
+                <div
+                  key={wallet.id}
+                  className="flex items-center justify-between p-3 rounded-lg bg-muted/50"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-[var(--accent-gold)]/10 flex items-center justify-center">
+                      <Wallet className="w-4 h-4 text-[var(--accent-gold)]" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-sm">{wallet.label || wallet.chain}</p>
+                      <Badge variant="success" className="mt-1">
+                        connected
+                      </Badge>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-medium text-sm">{exchange.name}</p>
-                    <Badge variant="success" className="mt-1">
-                      {exchange.status}
-                    </Badge>
-                  </div>
+                  <p className="font-mono text-sm">
+                    ${wallet.totalValueUsd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </p>
                 </div>
-                <p className="font-mono text-sm">{exchange.balance}</p>
-              </div>
-            ))}
-            <Button variant="outline" className="w-full mt-2">
-              + Connect Exchange
-            </Button>
+              ))
+            )}
+            <Link href="/dashboard/wallet">
+              <Button variant="outline" className="w-full mt-2">
+                + Connect Wallet
+              </Button>
+            </Link>
           </CardContent>
         </Card>
 
@@ -165,26 +143,34 @@ export default function OverviewPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {topPerformers.map((bot, index) => (
-              <div
-                key={bot.name}
-                className="flex items-center justify-between p-3 rounded-lg bg-muted/50"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[var(--accent-neon)]/10 flex items-center justify-center text-[var(--accent-neon)] font-bold text-sm">
-                    {index + 1}
+            {topPerformers.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No bots yet.</p>
+            ) : (
+              topPerformers.map((bot, index) => (
+                <div
+                  key={bot.id}
+                  className="flex items-center justify-between p-3 rounded-lg bg-muted/50"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-[var(--accent-neon)]/10 flex items-center justify-center text-[var(--accent-neon)] font-bold text-sm">
+                      {index + 1}
+                    </div>
+                    <p className="font-medium text-sm">{bot.name}</p>
                   </div>
-                  <p className="font-medium text-sm">{bot.name}</p>
+                  <div className="text-right">
+                    <p className={`font-mono text-sm ${bot.pnl >= 0 ? "text-green-400" : "text-red-400"}`}>
+                      {bot.pnl >= 0 ? "+" : ""}${bot.pnl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </p>
+                    <p className="text-xs text-muted-foreground">{bot.market}</p>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-mono text-sm text-green-400">{bot.pnl}</p>
-                  <p className="text-xs text-muted-foreground">{bot.percent}</p>
-                </div>
-              </div>
-            ))}
-            <Button variant="ghost" className="w-full mt-2 text-[var(--accent-neon)]">
-              View All Bots →
-            </Button>
+              ))
+            )}
+            <Link href="/dashboard/crypto-bots">
+              <Button variant="ghost" className="w-full mt-2 text-[var(--accent-neon)]">
+                View All Bots →
+              </Button>
+            </Link>
           </CardContent>
         </Card>
 
@@ -197,39 +183,39 @@ export default function OverviewPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {recentActivity.map((activity, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between py-2 border-b border-border last:border-0"
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                      activity.positive
-                        ? "bg-green-400/10 text-green-400"
-                        : "bg-muted text-muted-foreground"
-                    }`}
-                  >
-                    {activity.positive ? (
-                      <ArrowUpRight className="w-3 h-3" />
-                    ) : (
-                      <ArrowDownRight className="w-3 h-3" />
-                    )}
-                  </div>
-                  <div>
-                    <p className="text-sm">{activity.description}</p>
-                    <p className="text-xs text-muted-foreground">{activity.time}</p>
-                  </div>
-                </div>
-                <span
-                  className={`font-mono text-sm ${
-                    activity.positive ? "text-green-400" : "text-muted-foreground"
-                  }`}
+            {bots.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No recent activity.</p>
+            ) : (
+              bots.slice(0, 5).map((bot) => (
+                <div
+                  key={bot.id}
+                  className="flex items-center justify-between py-2 border-b border-border last:border-0"
                 >
-                  {activity.amount}
-                </span>
-              </div>
-            ))}
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                        bot.status === "active"
+                          ? "bg-green-400/10 text-green-400"
+                          : "bg-muted text-muted-foreground"
+                      }`}
+                    >
+                      {bot.status === "active" ? (
+                        <ArrowUpRight className="w-3 h-3" />
+                      ) : (
+                        <ArrowDownRight className="w-3 h-3" />
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-sm">{bot.name}</p>
+                      <p className="text-xs text-muted-foreground">{bot.strategy}</p>
+                    </div>
+                  </div>
+                  <Badge variant={bot.status === "active" ? "success" : "outline"}>
+                    {bot.status}
+                  </Badge>
+                </div>
+              ))
+            )}
           </CardContent>
         </Card>
       </div>
@@ -241,22 +227,30 @@ export default function OverviewPage() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Button variant="outline" className="h-20 flex-col gap-2">
-              <Bot className="w-5 h-5" />
-              <span>Create Bot</span>
-            </Button>
-            <Button variant="outline" className="h-20 flex-col gap-2">
-              <ArrowUpRight className="w-5 h-5" />
-              <span>Deposit</span>
-            </Button>
-            <Button variant="outline" className="h-20 flex-col gap-2">
-              <ArrowDownRight className="w-5 h-5" />
-              <span>Withdraw</span>
-            </Button>
-            <Button variant="outline" className="h-20 flex-col gap-2">
-              <TrendingUp className="w-5 h-5" />
-              <span>View Analytics</span>
-            </Button>
+            <Link href="/dashboard/crypto-bots">
+              <Button variant="outline" className="w-full h-20 flex-col gap-2">
+                <Bot className="w-5 h-5" />
+                <span>Create Bot</span>
+              </Button>
+            </Link>
+            <Link href="/dashboard/wallet">
+              <Button variant="outline" className="w-full h-20 flex-col gap-2">
+                <ArrowUpRight className="w-5 h-5" />
+                <span>Deposit</span>
+              </Button>
+            </Link>
+            <Link href="/dashboard/wallet">
+              <Button variant="outline" className="w-full h-20 flex-col gap-2">
+                <ArrowDownRight className="w-5 h-5" />
+                <span>Withdraw</span>
+              </Button>
+            </Link>
+            <Link href="/dashboard/analytics">
+              <Button variant="outline" className="w-full h-20 flex-col gap-2">
+                <TrendingUp className="w-5 h-5" />
+                <span>View Analytics</span>
+              </Button>
+            </Link>
           </div>
         </CardContent>
       </Card>
