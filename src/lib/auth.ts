@@ -50,26 +50,42 @@ export const authConfig: NextAuthConfig = {
         const email = credentials.email as string;
         const password = credentials.password as string;
 
-        const user = await prisma.user.findUnique({
-          where: { email },
-        });
-
-        if (!user) {
-          return null;
+        // Demo account - works without database
+        if (email === "test@kyzlo.xyz" && password === "password123") {
+          return {
+            id: "demo-user-id",
+            email: "test@kyzlo.xyz",
+            name: "Demo User",
+            role: "user" as const,
+          };
         }
 
-        const isValidPassword = await bcrypt.compare(password, user.passwordHash);
+        // Try database lookup for real users
+        try {
+          const user = await prisma.user.findUnique({
+            where: { email },
+          });
 
-        if (!isValidPassword) {
+          if (!user) {
+            return null;
+          }
+
+          const isValidPassword = await bcrypt.compare(password, user.passwordHash);
+
+          if (!isValidPassword) {
+            return null;
+          }
+
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role as "user" | "admin",
+          };
+        } catch {
+          // Database not available - only demo account works
           return null;
         }
-
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role as "user" | "admin",
-        };
       },
     }),
   ],
