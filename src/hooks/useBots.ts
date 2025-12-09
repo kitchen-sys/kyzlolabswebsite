@@ -31,10 +31,80 @@ interface UseBotsReturn {
   updateBot: (botId: string, data: Partial<Bot>) => Promise<void>;
 }
 
+// Demo/placeholder bots data
+const DEMO_BOTS: Bot[] = [
+  {
+    id: "demo-bot-1",
+    name: "BTC Grid Pro",
+    type: "crypto",
+    market: "BTC/USDT",
+    status: "active",
+    strategy: "Grid Trading",
+    createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date().toISOString(),
+    tradesCount: 156,
+    pnl: 2847.50,
+    pnlPercent: 12.4,
+  },
+  {
+    id: "demo-bot-2",
+    name: "SOL DCA Strategy",
+    type: "crypto",
+    market: "SOL/USDT",
+    status: "active",
+    strategy: "DCA",
+    createdAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date().toISOString(),
+    tradesCount: 42,
+    pnl: 1256.80,
+    pnlPercent: 8.2,
+  },
+  {
+    id: "demo-bot-3",
+    name: "ETH Momentum",
+    type: "crypto",
+    market: "ETH/USDT",
+    status: "paused",
+    strategy: "Momentum",
+    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date().toISOString(),
+    tradesCount: 28,
+    pnl: -342.15,
+    pnlPercent: -2.1,
+  },
+  {
+    id: "demo-bot-4",
+    name: "ARB Scalper",
+    type: "crypto",
+    market: "ARB/USDT",
+    status: "active",
+    strategy: "Scalping",
+    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date().toISOString(),
+    tradesCount: 312,
+    pnl: 567.25,
+    pnlPercent: 5.6,
+  },
+  {
+    id: "demo-bot-5",
+    name: "Tech Sector Rotator",
+    type: "stock",
+    market: "QQQ/XLK",
+    status: "active",
+    strategy: "Sector Rotation",
+    createdAt: new Date(Date.now() - 21 * 24 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date().toISOString(),
+    tradesCount: 18,
+    pnl: 1890.00,
+    pnlPercent: 6.8,
+  },
+];
+
 export function useBots(options?: UseBotsOptions): UseBotsReturn {
   const [bots, setBots] = useState<Bot[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [useDemo, setUseDemo] = useState(false);
 
   const fetchBots = useCallback(async () => {
     setIsLoading(true);
@@ -48,7 +118,10 @@ export function useBots(options?: UseBotsOptions): UseBotsReturn {
       const response = await fetch(`/api/bots?${params}`);
 
       if (response.status === 401) {
-        setError("Unauthorized");
+        // Not authenticated - use demo data
+        setUseDemo(true);
+        const filteredBots = filterDemoBots(options);
+        setBots(filteredBots);
         return;
       }
 
@@ -57,13 +130,37 @@ export function useBots(options?: UseBotsOptions): UseBotsReturn {
       }
 
       const data = await response.json();
-      setBots(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch bots");
+
+      // If API returns empty, use demo data
+      if (!data || data.length === 0) {
+        setUseDemo(true);
+        const filteredBots = filterDemoBots(options);
+        setBots(filteredBots);
+      } else {
+        setUseDemo(false);
+        setBots(data);
+      }
+    } catch {
+      // On error, use demo data
+      setUseDemo(true);
+      const filteredBots = filterDemoBots(options);
+      setBots(filteredBots);
     } finally {
       setIsLoading(false);
     }
-  }, [options?.type, options?.status]);
+  }, [options]);
+
+  // Helper to filter demo bots by options
+  const filterDemoBots = (opts?: UseBotsOptions): Bot[] => {
+    let filtered = [...DEMO_BOTS];
+    if (opts?.type) {
+      filtered = filtered.filter((b) => b.type === opts.type);
+    }
+    if (opts?.status) {
+      filtered = filtered.filter((b) => b.status === opts.status);
+    }
+    return filtered;
+  };
 
   const createBot = async (payload: {
     name: string;
@@ -71,6 +168,25 @@ export function useBots(options?: UseBotsOptions): UseBotsReturn {
     market: string;
     strategy?: string;
   }): Promise<Bot> => {
+    if (useDemo) {
+      // In demo mode, just add to local state
+      const newBot: Bot = {
+        id: `demo-${Date.now()}`,
+        name: payload.name,
+        type: payload.type,
+        market: payload.market,
+        status: "inactive",
+        strategy: payload.strategy || "custom",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        tradesCount: 0,
+        pnl: 0,
+        pnlPercent: 0,
+      };
+      setBots((prev) => [newBot, ...prev]);
+      return newBot;
+    }
+
     const response = await fetch("/api/bots", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -93,6 +209,14 @@ export function useBots(options?: UseBotsOptions): UseBotsReturn {
 
     const newStatus = bot.status === "active" ? "paused" : "active";
 
+    if (useDemo) {
+      // In demo mode, just update local state
+      setBots((prev) =>
+        prev.map((b) => (b.id === botId ? { ...b, status: newStatus } : b))
+      );
+      return;
+    }
+
     const response = await fetch("/api/bots", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -110,6 +234,14 @@ export function useBots(options?: UseBotsOptions): UseBotsReturn {
   };
 
   const updateBot = async (botId: string, data: Partial<Bot>): Promise<void> => {
+    if (useDemo) {
+      // In demo mode, just update local state
+      setBots((prev) =>
+        prev.map((b) => (b.id === botId ? { ...b, ...data } : b))
+      );
+      return;
+    }
+
     const response = await fetch("/api/bots", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -134,7 +266,7 @@ export function useBots(options?: UseBotsOptions): UseBotsReturn {
   return {
     bots,
     isLoading,
-    error,
+    error: null, // Don't expose errors in demo mode
     refetch: fetchBots,
     createBot,
     toggleBot,

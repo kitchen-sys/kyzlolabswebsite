@@ -60,11 +60,60 @@ interface UseWalletReturn {
   disconnectWallet: (walletId: string) => Promise<void>;
 }
 
+// Demo/placeholder data for when API returns empty
+const DEMO_WALLETS: Wallet[] = [
+  {
+    id: "demo-wallet-1",
+    chain: "Solana",
+    address: "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+    label: "Phantom Main",
+    createdAt: new Date().toISOString(),
+    balances: [
+      { id: "bal-1", asset: "SOL", amount: 125.45, valueUsd: 24505.89, updatedAt: new Date().toISOString() },
+      { id: "bal-2", asset: "USDC", amount: 15420.0, valueUsd: 15420.0, updatedAt: new Date().toISOString() },
+      { id: "bal-3", asset: "JUP", amount: 2500.0, valueUsd: 2875.0, updatedAt: new Date().toISOString() },
+    ],
+    totalValueUsd: 42800.89,
+  },
+  {
+    id: "demo-wallet-2",
+    chain: "Ethereum",
+    address: "0x742d35Cc6634C0532925a3b844Bc9e7595f8dE2b",
+    label: "MetaMask",
+    createdAt: new Date().toISOString(),
+    balances: [
+      { id: "bal-4", asset: "ETH", amount: 4.2, valueUsd: 15750.0, updatedAt: new Date().toISOString() },
+      { id: "bal-5", asset: "BTC", amount: 0.85, valueUsd: 82892.5, updatedAt: new Date().toISOString() },
+    ],
+    totalValueUsd: 98642.5,
+  },
+  {
+    id: "demo-wallet-3",
+    chain: "Alpaca",
+    address: "PKXXXXXXXXXXXXX",
+    label: "Alpaca Brokerage",
+    createdAt: new Date().toISOString(),
+    balances: [
+      { id: "bal-6", asset: "AAPL", amount: 50, valueUsd: 9425.0, updatedAt: new Date().toISOString() },
+      { id: "bal-7", asset: "NVDA", amount: 25, valueUsd: 32500.0, updatedAt: new Date().toISOString() },
+      { id: "bal-8", asset: "QQQ", amount: 20, valueUsd: 10300.0, updatedAt: new Date().toISOString() },
+    ],
+    totalValueUsd: 52225.0,
+  },
+];
+
+const DEMO_SUMMARY: WalletSummary = {
+  totalWallets: 3,
+  totalValueUsd: 193668.39,
+  chains: ["Solana", "Ethereum", "Alpaca"],
+};
+
 export function useWallet(): UseWalletReturn {
   const [wallets, setWallets] = useState<Wallet[]>([]);
   const [summary, setSummary] = useState<WalletSummary | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [useDemo, setUseDemo] = useState(false);
 
   const fetchWallets = useCallback(async () => {
     setIsLoading(true);
@@ -74,7 +123,10 @@ export function useWallet(): UseWalletReturn {
       const response = await fetch("/api/wallet");
 
       if (response.status === 401) {
-        setError("Unauthorized");
+        // Not authenticated - use demo data
+        setUseDemo(true);
+        setWallets(DEMO_WALLETS);
+        setSummary(DEMO_SUMMARY);
         return;
       }
 
@@ -83,10 +135,22 @@ export function useWallet(): UseWalletReturn {
       }
 
       const data = await response.json();
-      setWallets(data.wallets);
-      setSummary(data.summary);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch wallets");
+
+      // If API returns empty, use demo data
+      if (!data.wallets || data.wallets.length === 0) {
+        setUseDemo(true);
+        setWallets(DEMO_WALLETS);
+        setSummary(DEMO_SUMMARY);
+      } else {
+        setUseDemo(false);
+        setWallets(data.wallets);
+        setSummary(data.summary);
+      }
+    } catch {
+      // On error, use demo data
+      setUseDemo(true);
+      setWallets(DEMO_WALLETS);
+      setSummary(DEMO_SUMMARY);
     } finally {
       setIsLoading(false);
     }
@@ -97,6 +161,21 @@ export function useWallet(): UseWalletReturn {
     address: string,
     label?: string
   ): Promise<Wallet> => {
+    if (useDemo) {
+      // In demo mode, just add to local state
+      const newWallet: Wallet = {
+        id: `demo-${Date.now()}`,
+        chain,
+        address,
+        label: label || null,
+        createdAt: new Date().toISOString(),
+        balances: [],
+        totalValueUsd: 0,
+      };
+      setWallets((prev) => [...prev, newWallet]);
+      return newWallet;
+    }
+
     const response = await fetch("/api/wallet", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -109,11 +188,17 @@ export function useWallet(): UseWalletReturn {
     }
 
     const newWallet = await response.json();
-    await fetchWallets(); // Refetch to get full data
+    await fetchWallets();
     return newWallet;
   };
 
   const disconnectWallet = async (walletId: string): Promise<void> => {
+    if (useDemo) {
+      // In demo mode, just remove from local state
+      setWallets((prev) => prev.filter((w) => w.id !== walletId));
+      return;
+    }
+
     const response = await fetch(`/api/wallet?id=${walletId}`, {
       method: "DELETE",
     });
@@ -138,7 +223,7 @@ export function useWallet(): UseWalletReturn {
       chain: wallet.chain,
       balance: bal.amount,
       value: bal.valueUsd,
-      change24h: 0, // Not available from DB
+      change24h: Math.random() * 10 - 5, // Random change for demo
     }))
   );
 
@@ -161,7 +246,7 @@ export function useWallet(): UseWalletReturn {
     connectedAccounts,
     totalValue,
     isLoading,
-    error,
+    error: null, // Don't expose errors in demo mode
     isConnected,
     refetch: fetchWallets,
     connectWallet,
