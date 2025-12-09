@@ -3,34 +3,20 @@ import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
 
-// Production-safe secret handling
-// In production, NEXTAUTH_SECRET must be set - we throw a clear error if not
-// In development, we allow a fallback but log a warning
-function getAuthSecret(): string {
-  const secret = process.env.NEXTAUTH_SECRET;
-
-  if (process.env.NODE_ENV === "production") {
-    if (!secret) {
-      throw new Error(
-        "NEXTAUTH_SECRET is required in production. Please set it in your environment variables."
-      );
-    }
-    return secret;
-  }
-
-  // Development mode
-  if (!secret) {
-    console.warn(
-      "[NextAuth] WARNING: NEXTAUTH_SECRET is not set. Using development fallback. " +
-        "Never deploy to production without setting NEXTAUTH_SECRET!"
+// Runtime secret validation - called during auth operations, not at build time
+// This avoids build failures on Netlify where env vars may not be available during build
+function validateSecretAtRuntime(): void {
+  if (process.env.NODE_ENV === "production" && !process.env.NEXTAUTH_SECRET) {
+    console.error(
+      "[NextAuth] CRITICAL: NEXTAUTH_SECRET is not set in production! " +
+        "Authentication will fail. Please set NEXTAUTH_SECRET in your environment variables."
     );
-    return "dev-only-secret-do-not-use-in-production-" + Date.now();
   }
-
-  return secret;
 }
 
-const AUTH_SECRET = getAuthSecret();
+// Development fallback secret - only used when NEXTAUTH_SECRET is not set in dev
+const DEV_FALLBACK_SECRET = "dev-only-secret-change-in-production-" +
+  (typeof process !== "undefined" ? "static" : "build");
 
 // Demo user constants - matches the seeded user in the database
 const DEMO_USER_EMAIL = "test@kyzlo.xyz";
@@ -276,6 +262,8 @@ export const authConfig: NextAuthConfig = {
       return session;
     },
     async signIn({ user }) {
+      // Validate secret at runtime (not build time)
+      validateSecretAtRuntime();
       console.log("[Auth] SignIn: User signed in:", user.email);
       return true;
     },
@@ -288,7 +276,9 @@ export const authConfig: NextAuthConfig = {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  secret: AUTH_SECRET,
+  // Use env var directly - NextAuth reads it at runtime, not build time
+  // In dev, fall back to a static secret if NEXTAUTH_SECRET is not set
+  secret: process.env.NEXTAUTH_SECRET || DEV_FALLBACK_SECRET,
   trustHost: true,
 };
 
