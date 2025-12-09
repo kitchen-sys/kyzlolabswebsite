@@ -76,8 +76,11 @@ export const authConfig: NextAuthConfig = {
         const email = credentials.email as string;
         const password = credentials.password as string;
 
+        // Check if this is the demo account
+        const isDemoLogin = email === DEMO_USER_EMAIL && password === DEMO_USER_PASSWORD;
+
         try {
-          // Always try database lookup first
+          // Try database lookup first
           const user = await prisma.user.findUnique({
             where: { email },
           });
@@ -100,22 +103,16 @@ export const authConfig: NextAuthConfig = {
             };
           }
 
-          // User not found in database
-          // In development, allow demo account as fallback if DB is empty
-          if (process.env.NODE_ENV !== "production") {
-            if (email === DEMO_USER_EMAIL && password === DEMO_USER_PASSWORD) {
-              console.warn(
-                "[Auth] Credentials: Using demo fallback (user not in DB). " +
-                  "Run `npx prisma db seed` to seed the database."
-              );
-              return {
-                id: "demo-user-fallback",
-                email: DEMO_USER_EMAIL,
-                name: "Demo User (Fallback)",
-                role: "user" as const,
-                walletAddress: null,
-              };
-            }
+          // User not found in database - allow demo account as fallback
+          if (isDemoLogin) {
+            console.log("[Auth] Credentials: Using demo fallback (user not in DB)");
+            return {
+              id: "demo-user-fallback",
+              email: DEMO_USER_EMAIL,
+              name: "Demo User",
+              role: "user" as const,
+              walletAddress: null,
+            };
           }
 
           console.error("[Auth] Credentials: User not found:", email);
@@ -123,21 +120,16 @@ export const authConfig: NextAuthConfig = {
         } catch (error) {
           console.error("[Auth] Credentials: Database error:", error);
 
-          // In development only, allow demo account if database is unavailable
-          if (process.env.NODE_ENV !== "production") {
-            if (email === DEMO_USER_EMAIL && password === DEMO_USER_PASSWORD) {
-              console.warn(
-                "[Auth] Credentials: Database unavailable, using demo fallback. " +
-                  "Ensure DATABASE_URL is configured correctly."
-              );
-              return {
-                id: "demo-user-no-db",
-                email: DEMO_USER_EMAIL,
-                name: "Demo User (No DB)",
-                role: "user" as const,
-                walletAddress: null,
-              };
-            }
+          // Allow demo account if database is unavailable
+          if (isDemoLogin) {
+            console.log("[Auth] Credentials: Database unavailable, using demo fallback");
+            return {
+              id: "demo-user-fallback",
+              email: DEMO_USER_EMAIL,
+              name: "Demo User",
+              role: "user" as const,
+              walletAddress: null,
+            };
           }
 
           return null;
@@ -160,11 +152,18 @@ export const authConfig: NextAuthConfig = {
 
         const walletAddress = credentials.walletAddress as string;
         const walletType = (credentials.walletType as string) || "phantom";
+        const walletName = `${walletType.charAt(0).toUpperCase() + walletType.slice(1)} Wallet`;
 
-        console.log(
-          "[Auth] Wallet: Attempting auth for wallet:",
-          walletAddress.slice(0, 8) + "..."
-        );
+        console.log("[Auth] Wallet: Attempting auth for wallet:", walletAddress.slice(0, 8) + "...");
+
+        // Helper to create demo wallet session
+        const createDemoWalletSession = () => ({
+          id: "demo-wallet-user",
+          email: `${walletAddress.slice(0, 8)}@wallet.demo`,
+          name: walletName,
+          role: "user" as const,
+          walletAddress: walletAddress,
+        });
 
         try {
           // Look for an existing wallet in the database
@@ -174,11 +173,7 @@ export const authConfig: NextAuthConfig = {
           });
 
           if (existingWallet) {
-            // Wallet exists - return the associated user
-            console.log(
-              "[Auth] Wallet: Found existing wallet, user:",
-              existingWallet.user.email
-            );
+            console.log("[Auth] Wallet: Found existing wallet, user:", existingWallet.user.email);
             return {
               id: existingWallet.user.id,
               email: existingWallet.user.email,
@@ -188,57 +183,43 @@ export const authConfig: NextAuthConfig = {
             };
           }
 
-          // For demo purposes: link wallet to the demo user if they exist
-          // In production, you would create a new user or require email signup
+          // Try to link wallet to the demo user if they exist
           const demoUser = await prisma.user.findUnique({
             where: { email: DEMO_USER_EMAIL },
           });
 
           if (demoUser) {
-            // Create a new wallet record linked to the demo user
-            await prisma.wallet.create({
-              data: {
-                userId: demoUser.id,
-                chain: "solana",
-                address: walletAddress,
-                label: `${walletType.charAt(0).toUpperCase() + walletType.slice(1)} Wallet`,
-              },
-            });
+            try {
+              await prisma.wallet.create({
+                data: {
+                  userId: demoUser.id,
+                  chain: "solana",
+                  address: walletAddress,
+                  label: walletName,
+                },
+              });
+              console.log("[Auth] Wallet: Created new wallet for demo user");
+            } catch {
+              console.log("[Auth] Wallet: Could not create wallet record, continuing");
+            }
 
-            console.log("[Auth] Wallet: Created new wallet for demo user");
             return {
               id: demoUser.id,
               email: demoUser.email,
-              name:
-                demoUser.name ||
-                `${walletType.charAt(0).toUpperCase() + walletType.slice(1)} Wallet`,
+              name: demoUser.name || walletName,
               role: demoUser.role as "user" | "admin",
               walletAddress: walletAddress,
             };
           }
 
-          // No demo user - create a synthetic user for demo purposes
-          // In production, this should require proper user registration
-          console.warn("[Auth] Wallet: No demo user found, creating synthetic session");
-          return {
-            id: `wallet-${walletAddress.slice(0, 16)}`,
-            email: `${walletAddress.slice(0, 8)}@wallet.demo`,
-            name: `${walletType.charAt(0).toUpperCase() + walletType.slice(1)} Wallet`,
-            role: "user" as const,
-            walletAddress: walletAddress,
-          };
+          // No demo user in DB - use demo session
+          console.log("[Auth] Wallet: Using demo wallet session");
+          return createDemoWalletSession();
         } catch (error) {
           console.error("[Auth] Wallet: Database error:", error);
-
-          // Database unavailable - create synthetic session for demo
-          console.warn("[Auth] Wallet: Database unavailable, using synthetic session");
-          return {
-            id: `wallet-${walletAddress.slice(0, 16)}`,
-            email: `${walletAddress.slice(0, 8)}@wallet.demo`,
-            name: `${walletType.charAt(0).toUpperCase() + walletType.slice(1)} Wallet`,
-            role: "user" as const,
-            walletAddress: walletAddress,
-          };
+          // Database unavailable - use demo session
+          console.log("[Auth] Wallet: Database unavailable, using demo wallet session");
+          return createDemoWalletSession();
         }
       },
     }),
