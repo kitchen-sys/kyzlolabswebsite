@@ -8,6 +8,8 @@ export interface User {
   name: string | null;
   role: "user" | "admin";
   createdAt?: string;
+  walletAddress?: string | null;
+  isWalletUser?: boolean;
   stats?: {
     botsCount: number;
     tradesCount: number;
